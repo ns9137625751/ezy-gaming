@@ -1,0 +1,134 @@
+{{define "base"}}
+<!DOCTYPE html>
+<html lang="en-IN" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  {{/* ── Page title ─────────────────────────────────────────────── */}}
+  <title>{{if .SEO}}{{.SEO.FullTitle}}{{else if .Title}}{{.Title}} | Ezy Gaming{{else}}Ezy Gaming Zone — Gaming Café in Nikol, Ahmedabad{{end}}</title>
+
+  {{/* ── Primary meta ───────────────────────────────────────────── */}}
+  <meta name="description" content="{{if .SEO}}{{.SEO.FullDescription}}{{else if .MetaDescription}}{{.MetaDescription}}{{else}}Ezy Gaming Zone — Ahmedabad's best gaming café in Nikol. 20 RTX 4090 Gaming PCs, 20 PS5 consoles on 4K displays, esports tournaments, memberships. Book online now.{{end}}">
+  <meta name="keywords" content="{{if .SEO}}{{.SEO.Keywords}}{{else}}gaming zone ahmedabad, gaming cafe ahmedabad, gaming zone nikol, ps5 zone ahmedabad, gaming pc cafe ahmedabad, esports cafe ahmedabad, gaming arena ahmedabad, gaming lounge ahmedabad, LAN gaming ahmedabad{{end}}">
+  <meta name="author" content="Ezy Gaming Zone">
+  <meta name="robots" content="{{if .SEO}}{{if .SEO.NoIndex}}noindex, nofollow{{else}}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{{end}}{{else}}index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1{{end}}">
+  <meta name="theme-color" content="#0a0a0f">
+  <meta name="geo.region" content="IN-GJ">
+  <meta name="geo.placename" content="Ahmedabad">
+  <meta name="geo.position" content="23.0523;72.6416">
+  <meta name="ICBM" content="23.0523, 72.6416">
+
+  {{/* ── Canonical ───────────────────────────────────────────────── */}}
+  <link rel="canonical" href="{{if .SEO}}{{.SEO.Canonical}}{{else}}https://www.ezygaming.in{{end}}">
+
+  {{/* ── Open Graph ──────────────────────────────────────────────── */}}
+  <meta property="og:site_name" content="Ezy Gaming Zone">
+  <meta property="og:type" content="{{if .SEO}}{{.SEO.OGType}}{{else}}website{{end}}">
+  <meta property="og:title" content="{{if .SEO}}{{.SEO.FullTitle}}{{else if .Title}}{{.Title}} | Ezy Gaming{{else}}Ezy Gaming Zone — Gaming Café in Ahmedabad{{end}}">
+  <meta property="og:description" content="{{if .SEO}}{{.SEO.FullDescription}}{{else}}Ahmedabad's best gaming café in Nikol. RTX 4090 PCs, PS5 on 4K, esports tournaments.{{end}}">
+  <meta property="og:url" content="{{if .SEO}}{{.SEO.Canonical}}{{else}}https://www.ezygaming.in{{end}}">
+  <meta property="og:image" content="{{if .SEO}}{{.SEO.OGImage}}{{else}}https://www.ezygaming.in/static/img/og-default.jpg{{end}}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Ezy Gaming Zone — Gaming Café in Nikol, Ahmedabad">
+  <meta property="og:locale" content="en_IN">
+
+  {{/* ── Twitter / X Card ────────────────────────────────────────── */}}
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@ezygamingzone">
+  <meta name="twitter:creator" content="@ezygamingzone">
+  <meta name="twitter:title" content="{{if .SEO}}{{.SEO.FullTitle}}{{else if .Title}}{{.Title}} | Ezy Gaming{{else}}Ezy Gaming Zone — Gaming Café in Ahmedabad{{end}}">
+  <meta name="twitter:description" content="{{if .SEO}}{{.SEO.FullDescription}}{{else}}Ahmedabad's best gaming café in Nikol. RTX 4090 PCs, PS5 on 4K, esports tournaments.{{end}}">
+  <meta name="twitter:image" content="{{if .SEO}}{{.SEO.OGImage}}{{else}}https://www.ezygaming.in/static/img/og-default.jpg{{end}}">
+
+  {{/* ── Icons & PWA ─────────────────────────────────────────────── */}}
+  <link rel="icon" type="image/png" href="/static/images/logo_without_bac.png">
+  <link rel="apple-touch-icon" href="/static/images/logo_without_bac.png">
+
+  {{/* ── Preconnect (performance) ────────────────────────────────── */}}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://cdn.jsdelivr.net">
+
+  {{/* ── Google Fonts with font-display:swap ────────────────────── */}}
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700;800;900&family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  {{/* ── Tailwind CDN ─────────────────────────────────────────────── */}}
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'display': ['Orbitron', 'sans-serif'],
+            'rajdhani': ['Rajdhani', 'sans-serif'],
+            'inter':    ['Inter', 'sans-serif'],
+            'mono':     ['"Share Tech Mono"', 'monospace'],
+          },
+          colors: {
+            'neon-cyan':    '#00f5ff',
+            'neon-purple':  '#a855f7',
+            'neon-green':   '#00ff88',
+            'neon-orange':  '#ff6b35',
+            'dark-base':    '#0a0a0f',
+            'dark-surface': '#12121a',
+            'dark-elevated':'#1a1a28',
+          },
+          animation: {
+            'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            'float':      'float 6s ease-in-out infinite',
+            'glow':       'glow 2s ease-in-out infinite alternate',
+            'marquee':    'marquee 30s linear infinite',
+            'rgb-border': 'rgb-border 4s linear infinite',
+          },
+          keyframes: {
+            float:   {'0%, 100%':{transform:'translateY(0px)'},'50%':{transform:'translateY(-10px)'}},
+            glow:    {from:{'box-shadow':'0 0 10px #00f5ff40'},to:{'box-shadow':'0 0 30px #00f5ff, 0 0 60px #00f5ff40'}},
+            marquee: {'0%':{transform:'translateX(0)'},'100%':{transform:'translateX(-50%)'}},
+          },
+          backgroundImage: {
+            'grid-pattern': "linear-gradient(rgba(0,245,255,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.03) 1px, transparent 1px)",
+          },
+        }
+      }
+    }
+  </script>
+
+  {{/* ── Alpine.js (deferred so it doesn't block LCP) ────────────── */}}
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+  {{/* ── App CSS ──────────────────────────────────────────────────── */}}
+  <link rel="stylesheet" href="/static/css/app.css">
+
+  {{/* ── Base JSON-LD (LocalBusiness + WebSite on every page) ────── */}}
+  {{if .LocalBusinessLD}}{{.LocalBusinessLD}}{{end}}
+  {{if .WebSiteLD}}{{.WebSiteLD}}{{end}}
+
+  {{/* ── Per-page JSON-LD injected by controllers ───────────────── */}}
+  {{if .BreadcrumbLD}}{{.BreadcrumbLD}}{{end}}
+  {{range .ExtraLDs}}{{.}}{{end}}
+
+  {{/* ── Per-page extra head (styles, preloads) ─────────────────── */}}
+  {{block "extra_head" .}}{{end}}
+</head>
+
+<body class="bg-[#0a0a0f] text-white font-inter antialiased overflow-x-hidden">
+
+  {{/* ── Skip nav for accessibility (also helps crawlers) ────────── */}}
+  <a href="#main-content" class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:bg-purple-600 focus:text-white focus:px-4 focus:py-2 focus:rounded-lg">Skip to main content</a>
+
+  {{template "navbar" .}}
+
+  <main id="main-content" role="main">
+    {{block "content" .}}{{end}}
+  </main>
+
+  {{template "footer" .}}
+
+  {{/* ── App JS ───────────────────────────────────────────────────── */}}
+  <script src="/static/js/app.js"></script>
+  {{block "extra_scripts" .}}{{end}}
+</body>
+</html>
+{{end}}

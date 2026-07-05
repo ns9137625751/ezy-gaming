@@ -1,0 +1,23 @@
+# Binaries
+tmp/
+*.exe
+*.out
+
+# Environment
+.env
+
+# Uploads
+static/uploads/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+Thumbs.db

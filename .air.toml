@@ -1,0 +1,32 @@
+# Air — Live Reload for Go
+# https://github.com/air-verse/air
+
+root = "."
+tmp_dir = "tmp"
+
+[build]
+  cmd = "go build -o ./tmp/main ./cmd/server"
+  bin = "./tmp/main"
+  full_bin = "./tmp/main"
+  include_ext = ["go", "html", "css", "js"]
+  exclude_dir = ["tmp", "vendor", "static/dist", ".git"]
+  exclude_file = []
+  delay = 500
+  kill_delay = 500
+  log = "build-errors.log"
+  rerun = false
+  rerun_delay = 500
+
+[log]
+  time = false
+  main_only = false
+
+[color]
+  main   = "magenta"
+  watcher = "cyan"
+  build  = "yellow"
+  runner = "green"
+
+[screen]
+  clear_on_rebuild = true
+  keep_scroll = true

@@ -1,0 +1,167 @@
+{{define "admin_layout"}}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin — Ezy Gaming</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { display: ['Orbitron','sans-serif'], inter: ['Inter','sans-serif'] } } }
+    }
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="robots" content="noindex,nofollow">
+  <style>
+    [x-cloak] { display: none !important; }
+    .nav-item {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 0.625rem 0.75rem;
+      border-radius: 0.75rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      transition: all 0.15s ease;
+      color: #9ca3af;
+      text-decoration: none;
+    }
+    .nav-item:hover {
+      background: rgba(255,255,255,0.05);
+      color: #ffffff;
+    }
+    .nav-item.active {
+      background: linear-gradient(135deg, rgba(147,51,234,0.25) 0%, rgba(99,102,241,0.15) 100%);
+      color: #c4b5fd;
+      border: 1px solid rgba(167,139,250,0.25);
+      box-shadow: 0 0 16px rgba(147,51,234,0.15);
+    }
+    .nav-item.active svg { color: #a78bfa; }
+    .sidebar-glow {
+      background: linear-gradient(180deg, #0f0f1e 0%, #0a0a14 100%);
+      border-right: 1px solid rgba(255,255,255,0.06);
+      box-shadow: 4px 0 24px rgba(0,0,0,0.4);
+    }
+  </style>
+</head>
+<body class="bg-[#0a0a0f] text-white font-inter h-full" x-data="{ sidebarOpen: false }">
+
+<div class="flex h-screen overflow-hidden">
+
+  <!-- Sidebar backdrop (mobile) -->
+  <div x-show="sidebarOpen" x-cloak @click="sidebarOpen=false"
+    class="fixed inset-0 z-20 bg-black/60 lg:hidden"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar-glow fixed inset-y-0 left-0 z-30 w-64 flex flex-col transition-transform duration-200 lg:translate-x-0 lg:static lg:inset-auto lg:z-auto"
+    :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'">
+
+    <!-- Accent line at top -->
+    <div class="h-0.5 w-full bg-gradient-to-r from-purple-600 via-violet-500 to-cyan-500 flex-shrink-0"></div>
+
+    <!-- Logo -->
+    <div class="flex items-center gap-3 px-5 py-5 flex-shrink-0" style="border-bottom:1px solid rgba(255,255,255,0.06)">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-br from-purple-600 to-cyan-600 flex items-center justify-center flex-shrink-0 shadow-lg">
+        <img src="/static/images/logo_without_bac.png" alt="Ezy Gaming" class="h-6 object-contain">
+      </div>
+      <div>
+        <div class="font-display text-sm font-black text-white tracking-wider leading-tight">EZY GAMING</div>
+        <div class="text-[10px] font-semibold tracking-widest uppercase" style="color:#7c3aed">Admin Panel</div>
+      </div>
+    </div>
+
+    <!-- Nav -->
+    <nav class="flex-1 px-3 py-5 overflow-y-auto" style="display:flex;flex-direction:column;gap:2px">
+      <p class="px-3 text-[10px] font-bold uppercase tracking-widest mb-3" style="color:#4b5563;letter-spacing:0.15em">Navigation</p>
+
+      <a href="/admin/dashboard" class="nav-item {{if eq .Page "dashboard"}}active{{end}}">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+        </svg>
+        <span>Dashboard</span>
+      </a>
+
+      <a href="/admin/bookings" class="nav-item {{if eq .Page "bookings"}}active{{end}}">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+        </svg>
+        <span>Bookings</span>
+      </a>
+
+      {{if eq .User.Role "admin"}}
+      <a href="/admin/tournament" class="nav-item {{if eq .Page "tournament"}}active{{end}}">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+        </svg>
+        <span>Tournaments</span>
+      </a>
+      <a href="/admin/inventory" class="nav-item {{if eq .Page "inventory"}}active{{end}}">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        <span>Inventory</span>
+      </a>
+      <a href="/admin/contacts" class="nav-item {{if eq .Page "contacts"}}active{{end}}">
+        <svg class="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+        </svg>
+        <span>Contacts</span>
+        {{if gt .UnreadContacts 0}}
+        <span style="margin-left:auto;background:#ef4444;color:#fff;font-size:10px;font-weight:700;padding:1px 6px;border-radius:9999px;line-height:1.4">{{.UnreadContacts}}</span>
+        {{end}}
+      </a>
+      {{end}}
+    </nav>
+
+    <!-- User card -->
+    <div class="px-3 py-4 flex-shrink-0" style="border-top:1px solid rgba(255,255,255,0.06)">
+      <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:12px;padding:12px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <div style="width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,#7c3aed,#06b6d4);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0">
+            {{first 1 .User.Name}}
+          </div>
+          <div style="min-width:0">
+            <div style="font-size:13px;font-weight:600;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{.User.Name}}</div>
+            <div style="font-size:11px;color:#6b7280;text-transform:capitalize">{{.User.Role}}</div>
+          </div>
+        </div>
+        <a href="/admin/logout"
+          style="display:flex;align-items:center;gap:6px;font-size:11px;color:#6b7280;text-decoration:none;padding:6px 8px;border-radius:8px;transition:all 0.15s"
+          onmouseover="this.style.background='rgba(239,68,68,0.1)';this.style.color='#f87171'"
+          onmouseout="this.style.background='transparent';this.style.color='#6b7280'">
+          <svg style="width:13px;height:13px;flex-shrink:0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+          </svg>
+          Sign out
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Top bar -->
+    <header class="bg-[#0d0d18] border-b border-gray-800 flex items-center gap-4 px-5 h-14 flex-shrink-0">
+      <button @click="sidebarOpen=true" class="lg:hidden text-gray-400 hover:text-white">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/></svg>
+      </button>
+      <div class="flex-1 min-w-0">
+        <h1 class="font-display text-sm font-bold text-white tracking-wide capitalize">{{.Page}}</h1>
+      </div>
+      <a href="/" target="_blank" class="text-gray-500 hover:text-gray-300 transition-colors text-xs">View site →</a>
+    </header>
+
+    <!-- Content -->
+    <main class="flex-1 overflow-y-auto p-6">
+      {{block "admin_content" .}}{{end}}
+    </main>
+
+  </div>
+</div>
+
+</body>
+</html>
+{{end}}

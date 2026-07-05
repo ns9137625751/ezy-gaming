@@ -1,0 +1,949 @@
+{{block "content" .}}
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 1 — HERO
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative min-h-screen flex items-center justify-center overflow-hidden" id="hero">
+
+  {{/* Animated background layers */}}
+  <div class="absolute inset-0 bg-[#0a0a0f]"></div>
+
+  {{/* Grid overlay */}}
+  <div class="absolute inset-0" style="background-image: linear-gradient(rgba(0,245,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.04) 1px, transparent 1px); background-size: 60px 60px;"></div>
+
+  {{/* Radial glows */}}
+  <div class="absolute top-1/3 left-1/4 w-96 h-96 bg-cyan-500/10 rounded-full blur-[120px] animate-pulse-slow"></div>
+  <div class="absolute bottom-1/3 right-1/4 w-80 h-80 bg-purple-600/10 rounded-full blur-[100px] animate-pulse-slow" style="animation-delay: 1.5s;"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/5 rounded-full blur-[150px]"></div>
+
+  {{/* Scanline effect */}}
+  <div class="absolute inset-0 pointer-events-none" style="background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);"></div>
+
+  {{/* Floating particles (CSS-animated dots) */}}
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="particle" style="--x:10%;--y:20%;--d:4s;--s:0.8"></div>
+    <div class="particle" style="--x:25%;--y:60%;--d:6s;--s:0.5"></div>
+    <div class="particle" style="--x:45%;--y:35%;--d:5s;--s:1"></div>
+    <div class="particle" style="--x:65%;--y:75%;--d:7s;--s:0.6"></div>
+    <div class="particle" style="--x:80%;--y:25%;--d:4.5s;--s:0.9"></div>
+    <div class="particle" style="--x:90%;--y:55%;--d:8s;--s:0.4"></div>
+    <div class="particle" style="--x:15%;--y:80%;--d:5.5s;--s:0.7"></div>
+    <div class="particle" style="--x:55%;--y:15%;--d:6.5s;--s:0.8"></div>
+  </div>
+
+  {{/* Hero content */}}
+  <div class="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center pt-20"
+       x-data="{}" x-init="$el.classList.add('animate-in')">
+
+    {{/* Badge */}}
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-cyan-500/30 bg-cyan-500/5 backdrop-blur-sm mb-8">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      <span class="text-cyan-400 text-xs font-rajdhani font-semibold tracking-widest uppercase">Now Open · Nikol, Ahmedabad</span>
+    </div>
+
+    {{/* Main heading */}}
+    <h1 class="font-orbitron font-black leading-tight mb-6">
+      <span class="block text-5xl sm:text-6xl lg:text-8xl text-white drop-shadow-[0_0_40px_rgba(0,245,255,0.3)]">LEVEL UP</span>
+      <span class="block text-5xl sm:text-6xl lg:text-8xl bg-gradient-to-r from-cyan-400 via-cyan-300 to-purple-500 bg-clip-text text-transparent mt-1">YOUR GAME</span>
+    </h1>
+
+    {{/* Subheading */}}
+    <p class="text-lg sm:text-xl text-gray-300 font-rajdhani font-medium max-w-2xl mx-auto mb-4 leading-relaxed">
+      Ahmedabad's most premium gaming café in Nikol — <span class="text-cyan-400">20 RTX 4090 Gaming PCs</span>, <span class="text-purple-400">20 PlayStation 5 consoles</span>, weekly tournaments, and a café that fuels your game.
+    </p>
+
+    {{/* Specs teaser */}}
+    <div class="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-10 text-sm font-mono text-gray-500">
+      <span class="text-cyan-500">// RTX 4090</span>
+      <span>·</span>
+      <span class="text-cyan-500">// i9-13900K</span>
+      <span>·</span>
+      <span class="text-cyan-500">// 240Hz IPS</span>
+      <span>·</span>
+      <span class="text-purple-500">// PS5 4K</span>
+      <span>·</span>
+      <span class="text-purple-500">// 55" OLED</span>
+    </div>
+
+    {{/* CTA buttons */}}
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="/book" class="group relative px-8 py-4 rounded-xl font-rajdhani font-bold text-lg tracking-wider overflow-hidden transition-all duration-300 hover:-translate-y-0.5">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-xl"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <div class="absolute inset-0 rounded-xl shadow-2xl shadow-cyan-500/0 group-hover:shadow-cyan-500/30 transition-all duration-300"></div>
+        <span class="relative flex items-center gap-2">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          BOOK A SESSION
+        </span>
+      </a>
+
+      <a href="/gaming-pcs" class="group px-8 py-4 rounded-xl font-rajdhani font-bold text-lg tracking-wider border border-white/20 hover:border-cyan-500/50 bg-white/5 hover:bg-white/10 backdrop-blur-sm transition-all duration-300 hover:-translate-y-0.5">
+        <span class="flex items-center gap-2 text-gray-300 group-hover:text-white transition-colors duration-200">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          EXPLORE SETUPS
+        </span>
+      </a>
+    </div>
+
+    {{/* Scroll indicator */}}
+    <div class="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 animate-bounce">
+      <span class="text-gray-600 text-xs font-mono tracking-widest">SCROLL</span>
+      <div class="w-px h-12 bg-gradient-to-b from-cyan-500/50 to-transparent"></div>
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 2 — STATS BAR
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-8 bg-[#0d0d15] border-y border-white/5 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-r from-cyan-500/5 via-transparent to-purple-600/5"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-0 lg:divide-x lg:divide-white/10">
+
+      <div class="flex flex-col items-center lg:items-start lg:px-10 gap-1">
+        <span class="font-orbitron font-black text-4xl sm:text-5xl text-cyan-400">20+</span>
+        <span class="font-rajdhani font-semibold text-gray-400 text-sm tracking-widest uppercase">Gaming PCs</span>
+        <span class="font-mono text-xs text-gray-600">RTX 4090 · i9 · 240Hz</span>
+      </div>
+
+      <div class="flex flex-col items-center lg:items-start lg:px-10 gap-1">
+        <span class="font-orbitron font-black text-4xl sm:text-5xl text-purple-400">20+</span>
+        <span class="font-rajdhani font-semibold text-gray-400 text-sm tracking-widest uppercase">PS5 Consoles</span>
+        <span class="font-mono text-xs text-gray-600">4K · 55" OLED · Dual ctrl</span>
+      </div>
+
+      <div class="flex flex-col items-center lg:items-start lg:px-10 gap-1">
+        <span class="font-orbitron font-black text-4xl sm:text-5xl text-orange-400">200+</span>
+        <span class="font-rajdhani font-semibold text-gray-400 text-sm tracking-widest uppercase">Games Available</span>
+        <span class="font-mono text-xs text-gray-600">PC + PS5 library</span>
+      </div>
+
+      <div class="flex flex-col items-center lg:items-start lg:px-10 gap-1">
+        <span class="font-orbitron font-black text-4xl sm:text-5xl text-green-400">24/7</span>
+        <span class="font-rajdhani font-semibold text-gray-400 text-sm tracking-widest uppercase">Weekly Tournaments</span>
+        <span class="font-mono text-xs text-gray-600">Cash prizes every week</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 3 — FEATURED SETUPS
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-pattern bg-[length:60px_60px] opacity-30"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block text-cyan-400 font-mono text-xs tracking-widest uppercase mb-3">// Our Setups</span>
+      <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white mb-4">
+        FLAGSHIP <span class="text-gradient-cyan">STATIONS</span>
+      </h2>
+      <p class="text-gray-400 font-rajdhani text-lg max-w-2xl mx-auto">Two dedicated zones — each engineered for maximum performance and immersion.</p>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+
+      {{/* Gaming PC Card */}}
+      <div class="group relative rounded-2xl overflow-hidden border border-cyan-500/20 hover:border-cyan-500/60 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/10">
+        {{/* RGB border animation */}}
+        <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-cyan-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+
+        {{/* Card background */}}
+        <div class="absolute inset-0 bg-gradient-to-br from-[#12121a] to-[#0d1520]"></div>
+
+        {{/* Glow accent */}}
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500 to-transparent opacity-60"></div>
+        <div class="absolute -top-20 -left-20 w-60 h-60 bg-cyan-500/10 rounded-full blur-3xl group-hover:bg-cyan-500/20 transition-all duration-500"></div>
+
+        <div class="relative p-8">
+          {{/* Badge */}}
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse"></span>
+            <span class="text-cyan-400 text-xs font-mono tracking-widest">PC ZONE</span>
+          </div>
+
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h3 class="font-orbitron font-black text-3xl text-white mb-1">GAMING PCs</h3>
+              <p class="text-gray-400 font-rajdhani">20 High-Performance Stations</p>
+            </div>
+            <div class="text-5xl opacity-20 group-hover:opacity-40 transition-opacity duration-300">🖥️</div>
+          </div>
+
+          {{/* Specs grid */}}
+          <div class="grid grid-cols-2 gap-3 mb-8">
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">GPU</div>
+              <div class="text-cyan-400 font-rajdhani font-bold text-sm">RTX 4090 24GB</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">CPU</div>
+              <div class="text-cyan-400 font-rajdhani font-bold text-sm">Intel i9-13900K</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">RAM</div>
+              <div class="text-cyan-400 font-rajdhani font-bold text-sm">32GB DDR5</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">DISPLAY</div>
+              <div class="text-cyan-400 font-rajdhani font-bold text-sm">27" 240Hz IPS</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">STORAGE</div>
+              <div class="text-cyan-400 font-rajdhani font-bold text-sm">2TB NVMe SSD</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">PERIPHERALS</div>
+              <div class="text-cyan-400 font-rajdhani font-bold text-sm">HyperX RGB Set</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs text-gray-500 font-mono mb-1">Starting from</div>
+              <div class="flex items-baseline gap-1">
+                <span class="font-orbitron font-black text-3xl text-white">₹60</span>
+                <span class="text-gray-400 font-rajdhani">/hour</span>
+              </div>
+            </div>
+            <a href="/gaming-pcs" class="px-6 py-3 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-black font-rajdhani font-bold text-sm tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-cyan-500/30">
+              EXPLORE →
+            </a>
+          </div>
+        </div>
+      </div>
+
+      {{/* PS5 Card */}}
+      <div class="group relative rounded-2xl overflow-hidden border border-purple-500/20 hover:border-purple-500/60 transition-all duration-500 hover:-translate-y-1 hover:shadow-2xl hover:shadow-purple-500/10">
+        <div class="absolute inset-0 rounded-2xl bg-gradient-to-br from-purple-500/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+        <div class="absolute inset-0 bg-gradient-to-br from-[#12121a] to-[#150d20]"></div>
+        <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500 to-transparent opacity-60"></div>
+        <div class="absolute -top-20 -right-20 w-60 h-60 bg-purple-500/10 rounded-full blur-3xl group-hover:bg-purple-500/20 transition-all duration-500"></div>
+
+        <div class="relative p-8">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 mb-6">
+            <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+            <span class="text-purple-400 text-xs font-mono tracking-widest">PS5 ZONE</span>
+          </div>
+
+          <div class="flex items-start justify-between mb-6">
+            <div>
+              <h3 class="font-orbitron font-black text-3xl text-white mb-1">PS5 CONSOLES</h3>
+              <p class="text-gray-400 font-rajdhani">20 Console Stations</p>
+            </div>
+            <div class="text-5xl opacity-20 group-hover:opacity-40 transition-opacity duration-300">🎮</div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3 mb-8">
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">CONSOLE</div>
+              <div class="text-purple-400 font-rajdhani font-bold text-sm">PlayStation 5</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">DISPLAY</div>
+              <div class="text-purple-400 font-rajdhani font-bold text-sm">55" 4K OLED TV</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">RESOLUTION</div>
+              <div class="text-purple-400 font-rajdhani font-bold text-sm">4K @ 120fps</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">CONTROLLERS</div>
+              <div class="text-purple-400 font-rajdhani font-bold text-sm">2× DualSense</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">MULTIPLAYER</div>
+              <div class="text-purple-400 font-rajdhani font-bold text-sm">Up to 4 Players</div>
+            </div>
+            <div class="bg-white/5 rounded-xl p-3 border border-white/5">
+              <div class="text-xs text-gray-500 font-mono mb-1">LIBRARY</div>
+              <div class="text-purple-400 font-rajdhani font-bold text-sm">100+ PS5 Titles</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div>
+              <div class="text-xs text-gray-500 font-mono mb-1">Starting from</div>
+              <div class="flex items-baseline gap-1">
+                <span class="font-orbitron font-black text-3xl text-white">₹50</span>
+                <span class="text-gray-400 font-rajdhani">/hour</span>
+              </div>
+            </div>
+            <a href="/ps5-zone" class="px-6 py-3 rounded-xl bg-purple-500 hover:bg-purple-400 text-white font-rajdhani font-bold text-sm tracking-wider transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/30">
+              EXPLORE →
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 3.5 — PS5 3D SHOWCASE
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 bg-[#0a0010] overflow-hidden" id="ps5-showcase">
+
+  {{/* Background effects */}}
+  <div class="absolute inset-0" style="background-image: linear-gradient(rgba(168,85,247,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(168,85,247,0.04) 1px, transparent 1px); background-size: 60px 60px;"></div>
+  <div class="absolute inset-0 bg-gradient-to-r from-[#0a0010] via-transparent to-[#0a0010] pointer-events-none z-10"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[400px] bg-purple-600/8 rounded-full blur-[120px] pointer-events-none"></div>
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/40 to-transparent"></div>
+
+  <div class="relative z-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+      {{/* Left — text content */}}
+      <div class="order-2 lg:order-1">
+        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/30 mb-6">
+          <span class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></span>
+          <span class="text-purple-400 text-xs font-mono tracking-widest">// PlayStation 5 Zone</span>
+        </div>
+
+        <h2 class="font-orbitron font-black text-4xl sm:text-5xl lg:text-6xl text-white mb-6 leading-tight">
+          FEEL THE<br>
+          <span class="bg-gradient-to-r from-purple-400 to-pink-500 bg-clip-text text-transparent">DUALSENSE</span>
+        </h2>
+
+        <p class="text-gray-300 font-rajdhani text-lg leading-relaxed mb-8">
+          Experience next-gen gaming like never before. Our PS5 zone features <span class="text-purple-400 font-semibold">20 PlayStation 5 consoles</span> each paired with a 55" 4K OLED TV, Dolby Atmos sound, and the iconic DualSense controller with haptic feedback.
+        </p>
+
+        {{/* Feature highlights */}}
+        <div class="grid grid-cols-2 gap-4 mb-10">
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-white font-rajdhani font-semibold text-sm">Haptic Feedback</div>
+              <div class="text-gray-500 text-xs font-mono">Feel every impact</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.069A1 1 0 0121 8.868V15.132a1 1 0 01-1.447.901L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg>
+            </div>
+            <div>
+              <div class="text-white font-rajdhani font-semibold text-sm">4K @ 120fps</div>
+              <div class="text-gray-500 text-xs font-mono">55" OLED display</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"/></svg>
+            </div>
+            <div>
+              <div class="text-white font-rajdhani font-semibold text-sm">Multiplayer</div>
+              <div class="text-gray-500 text-xs font-mono">Up to 4 players</div>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <div class="w-8 h-8 rounded-lg bg-purple-500/20 border border-purple-500/30 flex items-center justify-center flex-shrink-0 mt-0.5">
+              <svg class="w-4 h-4 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
+            </div>
+            <div>
+              <div class="text-white font-rajdhani font-semibold text-sm">100+ Titles</div>
+              <div class="text-gray-500 text-xs font-mono">Always updated</div>
+            </div>
+          </div>
+        </div>
+
+        {{/* Pricing chip */}}
+        <div class="flex items-center gap-4 mb-8 p-4 rounded-xl bg-white/3 border border-purple-500/20 w-fit">
+          <div>
+            <div class="text-xs text-gray-500 font-mono">Starting from</div>
+            <div class="flex items-baseline gap-1">
+              <span class="font-orbitron font-black text-4xl text-white">₹50</span>
+              <span class="text-gray-400 font-rajdhani">/hour</span>
+            </div>
+          </div>
+          <div class="w-px h-12 bg-white/10"></div>
+          <div>
+            <div class="text-xs text-gray-500 font-mono">Multiplayer</div>
+            <div class="font-orbitron font-bold text-purple-400 text-lg">₹80/hr</div>
+          </div>
+        </div>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="/ps5-zone" class="group px-7 py-3.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white font-rajdhani font-bold tracking-wider transition-all duration-200 hover:shadow-xl hover:shadow-purple-500/30 hover:-translate-y-0.5 flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            EXPLORE PS5 ZONE
+          </a>
+          <a href="/book" class="px-7 py-3.5 rounded-xl border border-purple-500/40 text-purple-300 hover:text-white hover:border-purple-400 hover:bg-purple-500/10 font-rajdhani font-bold tracking-wider transition-all duration-200 hover:-translate-y-0.5">
+            BOOK A SESSION
+          </a>
+        </div>
+      </div>
+
+      {{/* Right — 3D Model */}}
+      <div class="order-1 lg:order-2 relative">
+
+        {{/* Outer glow ring */}}
+        <div class="absolute -inset-4 rounded-3xl bg-gradient-to-br from-purple-600/20 via-pink-500/10 to-transparent blur-xl"></div>
+
+        {{/* Model container */}}
+        <div class="relative rounded-2xl overflow-hidden border border-purple-500/30 bg-[#0d0018] shadow-2xl shadow-purple-900/40">
+
+          {{/* Top bar (fake window chrome for premium feel) */}}
+          <div class="flex items-center gap-2 px-4 py-3 bg-white/3 border-b border-purple-500/20">
+            <div class="w-3 h-3 rounded-full bg-red-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-yellow-500/60"></div>
+            <div class="w-3 h-3 rounded-full bg-green-500/60"></div>
+            <span class="ml-3 text-xs text-gray-500 font-mono">PS5 DualSense Controller · 3D View</span>
+            <div class="ml-auto flex items-center gap-1">
+              <div class="w-1.5 h-1.5 rounded-full bg-purple-400 animate-pulse"></div>
+              <span class="text-xs text-purple-400 font-mono">LIVE</span>
+            </div>
+          </div>
+
+          {{/* The 3D iframe — lazy loaded on scroll */}}
+          <div class="relative" style="padding-bottom: 66.66%; height: 0; overflow: hidden;">
+            <iframe
+              id="ps5-controller-iframe"
+              data-src="https://sketchfab.com/models/b7bb9c5102a04cb0b1966c6d02bad7d6/embed?autostart=1&ui_theme=dark&camera=0&ui_watermark=0&ui_infos=0&ui_stop=0"
+              title="PS5 Controller"
+              frameborder="0"
+              allowfullscreen
+              mozallowfullscreen="true"
+              webkitallowfullscreen="true"
+              allow="autoplay; fullscreen; xr-spatial-tracking"
+              style="position:absolute; top:0; left:0; width:100%; height:100%; border:0;"
+            ></iframe>
+
+            {{/* Loading placeholder shown until iframe loads */}}
+            <div id="ps5-iframe-placeholder"
+                 class="absolute inset-0 flex flex-col items-center justify-center bg-[#0d0018] gap-4"
+                 style="z-index:1;">
+              <div class="relative">
+                <div class="w-20 h-20 rounded-full border-2 border-purple-500/30 flex items-center justify-center">
+                  <span class="text-4xl">🎮</span>
+                </div>
+                <div class="absolute inset-0 rounded-full border-t-2 border-purple-500 animate-spin"></div>
+              </div>
+              <div class="text-center">
+                <p class="text-white font-rajdhani font-semibold text-sm">PS5 DualSense</p>
+                <p class="text-gray-500 text-xs font-mono">Scroll to load 3D model</p>
+              </div>
+            </div>
+          </div>
+
+          {{/* Bottom label */}}
+          <div class="px-4 py-3 bg-white/2 border-t border-purple-500/10 flex items-center justify-between">
+            <span class="text-xs text-gray-500 font-mono">3D Model · Rotate · Zoom · Inspect</span>
+            <span class="text-xs text-purple-400 font-mono">Sketchfab</span>
+          </div>
+        </div>
+
+        {{/* Decorative floating chips */}}
+        <div class="absolute -top-4 -right-4 px-3 py-1.5 rounded-full bg-purple-600 text-white text-xs font-mono font-bold shadow-lg shadow-purple-600/40 hidden sm:block">
+          4K · 120fps
+        </div>
+        <div class="absolute -bottom-4 -left-4 px-3 py-1.5 rounded-full bg-[#1a1a28] border border-purple-500/30 text-purple-300 text-xs font-mono hidden sm:block">
+          Haptic Feedback
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 4 — WHY CHOOSE US
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 bg-[#0d0d15] overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/30 to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/30 to-transparent"></div>
+
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block text-cyan-400 font-mono text-xs tracking-widest uppercase mb-3">// Why Ezy Gaming</span>
+      <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white mb-4">
+        THE <span class="text-gradient-cyan">DIFFERENCE</span>
+      </h2>
+      <p class="text-gray-400 font-rajdhani text-lg max-w-2xl mx-auto">We don't just offer computers and consoles. We deliver an experience that keeps you coming back.</p>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+      {{/* Feature cards */}}
+      <div class="group relative p-6 rounded-2xl bg-white/3 border border-white/8 hover:border-cyan-500/40 hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+        <div class="w-14 h-14 rounded-xl bg-cyan-500/10 border border-cyan-500/20 flex items-center justify-center mb-5 group-hover:bg-cyan-500/20 group-hover:border-cyan-500/40 transition-all duration-300">
+          <svg class="w-7 h-7 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+        </div>
+        <h3 class="font-orbitron font-bold text-white text-lg mb-2">Top-Tier Hardware</h3>
+        <p class="text-gray-400 font-rajdhani text-sm leading-relaxed">RTX 4090 GPUs, Intel i9 CPUs, and 240Hz displays — every machine is built for maximum performance.</p>
+      </div>
+
+      <div class="group relative p-6 rounded-2xl bg-white/3 border border-white/8 hover:border-purple-500/40 hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+        <div class="w-14 h-14 rounded-xl bg-purple-500/10 border border-purple-500/20 flex items-center justify-center mb-5 group-hover:bg-purple-500/20 group-hover:border-purple-500/40 transition-all duration-300">
+          <svg class="w-7 h-7 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>
+        </div>
+        <h3 class="font-orbitron font-bold text-white text-lg mb-2">200+ Latest Games</h3>
+        <p class="text-gray-400 font-rajdhani text-sm leading-relaxed">Massive library across PC and PS5 — from competitive FPS to AAA open-world adventures. Always up to date.</p>
+      </div>
+
+      <div class="group relative p-6 rounded-2xl bg-white/3 border border-white/8 hover:border-yellow-500/40 hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+        <div class="w-14 h-14 rounded-xl bg-yellow-500/10 border border-yellow-500/20 flex items-center justify-center mb-5 group-hover:bg-yellow-500/20 group-hover:border-yellow-500/40 transition-all duration-300">
+          <svg class="w-7 h-7 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/></svg>
+        </div>
+        <h3 class="font-orbitron font-bold text-white text-lg mb-2">Weekly Tournaments</h3>
+        <p class="text-gray-400 font-rajdhani text-sm leading-relaxed">Compete every weekend in Valorant, CS2, FIFA, and more. Real prize pools. Real glory. Join the scene.</p>
+      </div>
+
+      <div class="group relative p-6 rounded-2xl bg-white/3 border border-white/8 hover:border-orange-500/40 hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+        <div class="w-14 h-14 rounded-xl bg-orange-500/10 border border-orange-500/20 flex items-center justify-center mb-5 group-hover:bg-orange-500/20 group-hover:border-orange-500/40 transition-all duration-300">
+          <svg class="w-7 h-7 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/></svg>
+        </div>
+        <h3 class="font-orbitron font-bold text-white text-lg mb-2">Premium Café</h3>
+        <p class="text-gray-400 font-rajdhani text-sm leading-relaxed">Fuel your sessions with energy drinks, gamer snacks, hot meals, and specialty coffees. Delivered to your seat.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 5 — UPCOMING TOURNAMENTS
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-pattern bg-[length:60px_60px] opacity-20"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] bg-yellow-500/5 rounded-full blur-[100px]"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
+      <div>
+        <span class="inline-block text-yellow-400 font-mono text-xs tracking-widest uppercase mb-2">// Compete & Win</span>
+        <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white">
+          UPCOMING <span class="text-yellow-400">EVENTS</span>
+        </h2>
+      </div>
+      <a href="/tournaments" class="flex-shrink-0 px-5 py-2.5 rounded-lg border border-yellow-500/30 text-yellow-400 hover:bg-yellow-500/10 font-rajdhani font-bold text-sm tracking-wider transition-all duration-200">
+        VIEW ALL →
+      </a>
+    </div>
+
+    {{if .Tournaments}}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {{range .Tournaments}}
+      <div class="group relative rounded-2xl overflow-hidden border border-white/10 hover:border-yellow-500/30 bg-[#12121a] transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-yellow-500/5">
+        {{/* Status banner */}}
+        <div class="h-1 w-full {{if eq .Status "upcoming"}}bg-gradient-to-r from-yellow-500 to-orange-500{{else if eq .Status "ongoing"}}bg-gradient-to-r from-green-500 to-emerald-400{{else}}bg-gray-600{{end}}"></div>
+
+        <div class="p-6">
+          <div class="flex items-center justify-between mb-4">
+            <span class="px-3 py-1 rounded-full text-xs font-mono {{if eq .Status "upcoming"}}bg-yellow-500/10 text-yellow-400 border border-yellow-500/20{{else if eq .Status "ongoing"}}bg-green-500/10 text-green-400 border border-green-500/20{{else}}bg-gray-500/10 text-gray-400 border border-gray-500/20{{end}} uppercase tracking-widest">
+              {{.Status}}
+            </span>
+            <span class="text-xs text-gray-500 font-mono">{{.Platform}}</span>
+          </div>
+
+          <h3 class="font-orbitron font-bold text-white text-lg mb-2 group-hover:text-yellow-400 transition-colors duration-200">{{.Title}}</h3>
+          <p class="text-gray-400 font-rajdhani text-sm mb-5">{{.GameName}} · {{.Format}}</p>
+
+          <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-white/5 rounded-lg p-3">
+              <div class="text-xs text-gray-500 font-mono mb-1">PRIZE POOL</div>
+              <div class="font-orbitron font-bold text-yellow-400">₹{{printf "%.0f" .PrizePool}}</div>
+            </div>
+            <div class="bg-white/5 rounded-lg p-3">
+              <div class="text-xs text-gray-500 font-mono mb-1">ENTRY FEE</div>
+              <div class="font-orbitron font-bold text-white">{{if eq .EntryFee 0.0}}FREE{{else}}₹{{printf "%.0f" .EntryFee}}{{end}}</div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-4 border-t border-white/5">
+            <div class="text-xs text-gray-500 font-mono">
+              {{.RegisteredTeams}}/{{.MaxTeams}} teams
+            </div>
+            <a href="/tournaments/{{.ID}}" class="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-black font-rajdhani font-bold text-xs tracking-wider transition-all duration-200">
+              REGISTER
+            </a>
+          </div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+    {{else}}
+    {{/* No tournaments yet — placeholder cards */}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {{/* Card 1 */}}
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#12121a] p-6">
+        <div class="h-1 w-full bg-gradient-to-r from-yellow-500 to-orange-500 absolute top-0 left-0 right-0"></div>
+        <div class="mt-2">
+          <span class="px-3 py-1 rounded-full text-xs font-mono bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 uppercase tracking-widest">upcoming</span>
+          <h3 class="font-orbitron font-bold text-white text-lg mt-4 mb-1">Valorant Championship</h3>
+          <p class="text-gray-400 font-rajdhani text-sm mb-5">Valorant · 5v5 · PC</p>
+          <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-white/5 rounded-lg p-3"><div class="text-xs text-gray-500 font-mono mb-1">PRIZE POOL</div><div class="font-orbitron font-bold text-yellow-400">₹5,000</div></div>
+            <div class="bg-white/5 rounded-lg p-3"><div class="text-xs text-gray-500 font-mono mb-1">ENTRY FEE</div><div class="font-orbitron font-bold text-white">₹100</div></div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-white/5">
+            <div class="text-xs text-gray-500 font-mono">0/16 teams</div>
+            <a href="/tournaments" class="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-black font-rajdhani font-bold text-xs tracking-wider transition-all duration-200">REGISTER</a>
+          </div>
+        </div>
+      </div>
+      {{/* Card 2 */}}
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#12121a] p-6">
+        <div class="h-1 w-full bg-gradient-to-r from-yellow-500 to-orange-500 absolute top-0 left-0 right-0"></div>
+        <div class="mt-2">
+          <span class="px-3 py-1 rounded-full text-xs font-mono bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 uppercase tracking-widest">upcoming</span>
+          <h3 class="font-orbitron font-bold text-white text-lg mt-4 mb-1">FIFA 25 Cup</h3>
+          <p class="text-gray-400 font-rajdhani text-sm mb-5">FIFA 25 · 1v1 · PS5</p>
+          <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-white/5 rounded-lg p-3"><div class="text-xs text-gray-500 font-mono mb-1">PRIZE POOL</div><div class="font-orbitron font-bold text-yellow-400">₹3,000</div></div>
+            <div class="bg-white/5 rounded-lg p-3"><div class="text-xs text-gray-500 font-mono mb-1">ENTRY FEE</div><div class="font-orbitron font-bold text-white">FREE</div></div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-white/5">
+            <div class="text-xs text-gray-500 font-mono">0/32 players</div>
+            <a href="/tournaments" class="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-black font-rajdhani font-bold text-xs tracking-wider transition-all duration-200">REGISTER</a>
+          </div>
+        </div>
+      </div>
+      {{/* Card 3 */}}
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#12121a] p-6">
+        <div class="h-1 w-full bg-gradient-to-r from-yellow-500 to-orange-500 absolute top-0 left-0 right-0"></div>
+        <div class="mt-2">
+          <span class="px-3 py-1 rounded-full text-xs font-mono bg-yellow-500/10 text-yellow-400 border border-yellow-500/20 uppercase tracking-widest">upcoming</span>
+          <h3 class="font-orbitron font-bold text-white text-lg mt-4 mb-1">CS2 Open</h3>
+          <p class="text-gray-400 font-rajdhani text-sm mb-5">CS2 · 5v5 · PC</p>
+          <div class="grid grid-cols-2 gap-3 mb-5">
+            <div class="bg-white/5 rounded-lg p-3"><div class="text-xs text-gray-500 font-mono mb-1">PRIZE POOL</div><div class="font-orbitron font-bold text-yellow-400">₹7,500</div></div>
+            <div class="bg-white/5 rounded-lg p-3"><div class="text-xs text-gray-500 font-mono mb-1">ENTRY FEE</div><div class="font-orbitron font-bold text-white">₹150</div></div>
+          </div>
+          <div class="flex items-center justify-between pt-4 border-t border-white/5">
+            <div class="text-xs text-gray-500 font-mono">0/16 teams</div>
+            <a href="/tournaments" class="px-4 py-2 rounded-lg bg-yellow-500 hover:bg-yellow-400 text-black font-rajdhani font-bold text-xs tracking-wider transition-all duration-200">REGISTER</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {{end}}
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 6 — MEMBERSHIP PLANS
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 bg-[#0d0d15] overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+  <div class="absolute top-1/2 right-0 w-96 h-96 bg-purple-500/5 rounded-full blur-[120px]"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block text-purple-400 font-mono text-xs tracking-widest uppercase mb-3">// Save More, Play More</span>
+      <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white mb-4">
+        MEMBERSHIP <span class="text-purple-400">PLANS</span>
+      </h2>
+      <p class="text-gray-400 font-rajdhani text-lg max-w-2xl mx-auto">Join the Ezy Gaming family and unlock exclusive benefits, priority booking, and massive savings.</p>
+    </div>
+
+    {{if .Memberships}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {{range .Memberships}}
+      <div class="relative rounded-2xl overflow-hidden border {{if .BadgeText}}border-cyan-500/50 shadow-xl shadow-cyan-500/10{{else}}border-white/10{{end}} bg-[#12121a] transition-all duration-300 hover:-translate-y-1">
+        {{if .BadgeText}}
+        <div class="absolute -top-px left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-b-xl text-xs font-rajdhani font-bold text-white tracking-wider whitespace-nowrap">
+          {{.BadgeText}}
+        </div>
+        {{end}}
+        <div class="p-8 pt-10">
+          <h3 class="font-orbitron font-black text-2xl text-white mb-1">{{.Name}}</h3>
+          <p class="text-gray-500 font-rajdhani text-sm mb-6">{{.DurationDays}} days membership</p>
+          <div class="flex items-baseline gap-1 mb-8">
+            <span class="font-orbitron font-black text-5xl text-white">₹{{printf "%.0f" .Price}}</span>
+            <span class="text-gray-400 font-rajdhani">/month</span>
+          </div>
+          <ul class="space-y-3 mb-8">
+            {{range .Benefits}}
+            <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300">
+              <svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              {{.}}
+            </li>
+            {{end}}
+          </ul>
+          <a href="/memberships" class="block w-full text-center py-3 rounded-xl font-rajdhani font-bold tracking-wider transition-all duration-200 {{if .BadgeText}}bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/30{{else}}border border-white/20 text-gray-300 hover:border-white/40 hover:text-white hover:bg-white/5{{end}}">
+            GET STARTED
+          </a>
+        </div>
+      </div>
+      {{end}}
+    </div>
+    {{else}}
+    {{/* Default membership cards */}}
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#12121a] p-8 hover:-translate-y-1 transition-all duration-300">
+        <h3 class="font-orbitron font-black text-2xl text-white mb-1">SILVER</h3>
+        <p class="text-gray-500 font-rajdhani text-sm mb-6">30 days membership</p>
+        <div class="flex items-baseline gap-1 mb-8">
+          <span class="font-orbitron font-black text-5xl text-white">₹799</span>
+          <span class="text-gray-400 font-rajdhani">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>10 PC hours included</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>10% discount on sessions</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Tournament priority access</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Member badge</li>
+        </ul>
+        <a href="/memberships" class="block w-full text-center py-3 rounded-xl border border-white/20 text-gray-300 hover:border-white/40 hover:text-white hover:bg-white/5 font-rajdhani font-bold tracking-wider transition-all duration-200">GET STARTED</a>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden border border-cyan-500/50 shadow-xl shadow-cyan-500/10 bg-[#12121a] p-8 hover:-translate-y-1 transition-all duration-300">
+        <div class="absolute -top-px left-1/2 -translate-x-1/2 px-4 py-1 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-b-xl text-xs font-rajdhani font-bold text-white tracking-wider whitespace-nowrap">⭐ MOST POPULAR</div>
+        <h3 class="font-orbitron font-black text-2xl text-white mb-1 mt-4">GOLD</h3>
+        <p class="text-gray-500 font-rajdhani text-sm mb-6">30 days membership</p>
+        <div class="flex items-baseline gap-1 mb-8">
+          <span class="font-orbitron font-black text-5xl text-white">₹1,499</span>
+          <span class="text-gray-400 font-rajdhani">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>25 PC hours + 10 PS5 hours</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>20% discount on all sessions</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Free tournament entry (1/month)</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Snack voucher ₹200/month</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Priority seat booking</li>
+        </ul>
+        <a href="/memberships" class="block w-full text-center py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-600 text-white hover:shadow-lg hover:shadow-cyan-500/30 font-rajdhani font-bold tracking-wider transition-all duration-200">GET STARTED</a>
+      </div>
+
+      <div class="relative rounded-2xl overflow-hidden border border-white/10 bg-[#12121a] p-8 hover:-translate-y-1 transition-all duration-300">
+        <h3 class="font-orbitron font-black text-2xl text-white mb-1">PLATINUM</h3>
+        <p class="text-gray-500 font-rajdhani text-sm mb-6">30 days membership</p>
+        <div class="flex items-baseline gap-1 mb-8">
+          <span class="font-orbitron font-black text-5xl text-white">₹2,499</span>
+          <span class="text-gray-400 font-rajdhani">/month</span>
+        </div>
+        <ul class="space-y-3 mb-8">
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Unlimited PC + PS5 hours</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>30% off on everything</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Free unlimited tournaments</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Reserved VIP station</li>
+          <li class="flex items-center gap-3 text-sm font-rajdhani text-gray-300"><svg class="w-4 h-4 text-green-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>Snack voucher ₹500/month</li>
+        </ul>
+        <a href="/memberships" class="block w-full text-center py-3 rounded-xl border border-white/20 text-gray-300 hover:border-white/40 hover:text-white hover:bg-white/5 font-rajdhani font-bold tracking-wider transition-all duration-200">GET STARTED</a>
+      </div>
+    </div>
+    {{end}}
+
+    <div class="text-center mt-10">
+      <a href="/memberships" class="text-gray-400 hover:text-cyan-400 font-rajdhani font-semibold text-sm tracking-wider transition-colors duration-200 underline underline-offset-4">
+        View all membership plans & compare →
+      </a>
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 7 — POPULAR GAMES (MARQUEE)
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-20 overflow-hidden">
+  <div class="absolute inset-0 bg-grid-pattern bg-[length:60px_60px] opacity-20"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mb-12">
+    <div class="text-center">
+      <span class="inline-block text-green-400 font-mono text-xs tracking-widest uppercase mb-3">// What We Play</span>
+      <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white">
+        POPULAR <span class="text-green-400">TITLES</span>
+      </h2>
+    </div>
+  </div>
+
+  {{/* Marquee */}}
+  <div class="relative overflow-hidden">
+    <div class="absolute left-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-r from-[#0a0a0f] to-transparent pointer-events-none"></div>
+    <div class="absolute right-0 top-0 bottom-0 w-20 z-10 bg-gradient-to-l from-[#0a0a0f] to-transparent pointer-events-none"></div>
+
+    <div class="flex gap-4 animate-marquee whitespace-nowrap">
+      {{range .PopularGames}}
+      <div class="inline-flex items-center gap-3 px-6 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:bg-white/10 transition-all duration-200 flex-shrink-0">
+        <span class="text-2xl">{{.Icon}}</span>
+        <div>
+          <div class="font-rajdhani font-bold text-white text-sm">{{.Name}}</div>
+          <div class="font-mono text-xs text-gray-500">{{.Platform}}</div>
+        </div>
+      </div>
+      {{end}}
+      {{/* Duplicate for seamless loop */}}
+      {{range .PopularGames}}
+      <div class="inline-flex items-center gap-3 px-6 py-4 rounded-xl bg-white/5 border border-white/10 hover:border-cyan-500/30 hover:bg-white/10 transition-all duration-200 flex-shrink-0">
+        <span class="text-2xl">{{.Icon}}</span>
+        <div>
+          <div class="font-rajdhani font-bold text-white text-sm">{{.Name}}</div>
+          <div class="font-mono text-xs text-gray-500">{{.Platform}}</div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 8 — TESTIMONIALS
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 bg-[#0d0d15] overflow-hidden">
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent"></div>
+  <div class="absolute top-1/2 left-0 w-96 h-96 bg-cyan-500/5 rounded-full blur-[120px]"></div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <span class="inline-block text-cyan-400 font-mono text-xs tracking-widest uppercase mb-3">// What Gamers Say</span>
+      <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white">
+        GAMER <span class="text-cyan-400">REVIEWS</span>
+      </h2>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      {{range .Testimonials}}
+      <div class="group relative p-7 rounded-2xl bg-white/3 border border-white/8 hover:border-cyan-500/30 hover:bg-white/5 transition-all duration-300 hover:-translate-y-1">
+        {{/* Quote mark */}}
+        <div class="absolute top-6 right-6 text-5xl font-serif text-cyan-500/10 group-hover:text-cyan-500/20 transition-colors duration-300 select-none">"</div>
+
+        {{/* Stars */}}
+        <div class="flex gap-1 mb-4">
+          {{range until .Rating}}
+          <svg class="w-4 h-4 text-yellow-400" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+          {{end}}
+        </div>
+
+        <p class="text-gray-300 font-rajdhani text-sm leading-relaxed mb-6 relative z-10">"{{.Text}}"</p>
+
+        <div class="flex items-center gap-3 pt-5 border-t border-white/5">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-500 to-purple-600 flex items-center justify-center font-orbitron font-bold text-white text-sm">
+            {{first 1 .Name}}
+          </div>
+          <div>
+            <div class="font-rajdhani font-semibold text-white text-sm">{{.Name}}</div>
+            <div class="font-mono text-xs text-gray-500">{{.Role}}</div>
+          </div>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 9 — GALLERY PREVIEW
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-24 overflow-hidden">
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-4">
+      <div>
+        <span class="inline-block text-pink-400 font-mono text-xs tracking-widest uppercase mb-2">// Inside Ezy Gaming</span>
+        <h2 class="font-orbitron font-black text-4xl sm:text-5xl text-white">
+          THE <span class="text-pink-400">VIBE</span>
+        </h2>
+      </div>
+      <a href="/gallery" class="flex-shrink-0 px-5 py-2.5 rounded-lg border border-pink-500/30 text-pink-400 hover:bg-pink-500/10 font-rajdhani font-bold text-sm tracking-wider transition-all duration-200">
+        FULL GALLERY →
+      </a>
+    </div>
+
+    {{if .Gallery}}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      {{range .Gallery}}
+      <div class="group relative aspect-square rounded-xl overflow-hidden border border-white/10 hover:border-pink-500/40 cursor-pointer">
+        <img src="{{.ImageURL}}" alt="{{.Title}}" class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+        <div class="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+          <span class="text-white font-rajdhani text-sm font-semibold">{{.Title}}</span>
+        </div>
+      </div>
+      {{end}}
+    </div>
+    {{else}}
+    {{/* Gallery placeholder */}}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+      <div class="aspect-square rounded-xl border border-white/10 bg-white/3 flex items-center justify-center col-span-1 row-span-1">
+        <div class="text-center"><div class="text-4xl mb-2">🖥️</div><div class="text-xs text-gray-500 font-mono">PC SETUP</div></div>
+      </div>
+      <div class="aspect-square rounded-xl border border-white/10 bg-white/3 flex items-center justify-center">
+        <div class="text-center"><div class="text-4xl mb-2">🎮</div><div class="text-xs text-gray-500 font-mono">PS5 ZONE</div></div>
+      </div>
+      <div class="aspect-square rounded-xl border border-white/10 bg-white/3 flex items-center justify-center">
+        <div class="text-center"><div class="text-4xl mb-2">🏆</div><div class="text-xs text-gray-500 font-mono">TOURNAMENT</div></div>
+      </div>
+      <div class="aspect-square rounded-xl border border-white/10 bg-white/3 flex items-center justify-center">
+        <div class="text-center"><div class="text-4xl mb-2">☕</div><div class="text-xs text-gray-500 font-mono">CAFÉ</div></div>
+      </div>
+      <div class="aspect-square rounded-xl border border-white/10 bg-white/3 flex items-center justify-center">
+        <div class="text-center"><div class="text-4xl mb-2">👥</div><div class="text-xs text-gray-500 font-mono">COMMUNITY</div></div>
+      </div>
+      <div class="aspect-square rounded-xl border border-cyan-500/20 bg-cyan-500/5 flex items-center justify-center">
+        <a href="/gallery" class="text-center group">
+          <div class="text-4xl mb-2 group-hover:scale-110 transition-transform duration-200">📸</div>
+          <div class="text-xs text-cyan-400 font-mono">VIEW ALL</div>
+        </a>
+      </div>
+    </div>
+    {{end}}
+  </div>
+</section>
+
+
+{{/* ═══════════════════════════════════════════════════════════
+     SECTION 10 — CTA BANNER
+═══════════════════════════════════════════════════════════ */}}
+<section class="relative py-28 overflow-hidden">
+  {{/* Background */}}
+  <div class="absolute inset-0 bg-gradient-to-br from-[#050510] via-[#0d0520] to-[#050510]"></div>
+  <div class="absolute inset-0" style="background-image: linear-gradient(rgba(0,245,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(0,245,255,0.05) 1px, transparent 1px); background-size: 40px 40px;"></div>
+  <div class="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-purple-600/5 to-transparent"></div>
+
+  {{/* Glowing border top & bottom */}}
+  <div class="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-500/60 to-transparent"></div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-purple-500/60 to-transparent"></div>
+
+  {{/* Big glows */}}
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] bg-cyan-500/5 rounded-full blur-[100px]"></div>
+  <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[300px] bg-purple-600/5 rounded-full blur-[80px]"></div>
+
+  <div class="relative max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-green-500/30 bg-green-500/5 mb-8">
+      <span class="w-2 h-2 rounded-full bg-green-400 animate-pulse"></span>
+      <span class="text-green-400 text-xs font-rajdhani font-semibold tracking-widest uppercase">Seats Available Now</span>
+    </div>
+
+    <h2 class="font-orbitron font-black text-5xl sm:text-6xl lg:text-7xl text-white mb-6 leading-tight drop-shadow-[0_0_40px_rgba(0,245,255,0.2)]">
+      READY TO<br>
+      <span class="bg-gradient-to-r from-cyan-400 to-purple-500 bg-clip-text text-transparent">PLAY?</span>
+    </h2>
+
+    <p class="text-xl text-gray-300 font-rajdhani mb-10 max-w-2xl mx-auto">
+      Book your gaming session now and step into the ultimate gaming experience. First session? Bring a friend — pairs get 15% off!
+    </p>
+
+    <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a href="/book" class="group relative px-10 py-5 rounded-xl font-orbitron font-black text-lg tracking-wider overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-2xl hover:shadow-cyan-500/30">
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600"></div>
+        <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+        <span class="relative flex items-center gap-3">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          BOOK YOUR SEAT
+        </span>
+      </a>
+      <a href="/contact" class="px-10 py-5 rounded-xl font-orbitron font-black text-lg tracking-wider border border-white/20 hover:border-white/40 bg-white/5 hover:bg-white/10 text-gray-300 hover:text-white transition-all duration-300 hover:-translate-y-1">
+        CONTACT US
+      </a>
+    </div>
+
+    <p class="mt-8 text-gray-500 text-sm font-rajdhani">
+      No advance payment required · Walk-in welcome · Open 24/7, every day
+    </p>
+  </div>
+</section>
+
+{{end}}

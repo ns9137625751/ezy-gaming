@@ -1,0 +1,460 @@
+{{template "base" .}}
+
+{{define "extra_head"}}
+<style>
+  .input-field {
+    background: rgba(17,24,39,.8);
+    border: 1px solid rgba(75,85,99,.6);
+    color: white;
+    transition: border-color .2s, box-shadow .2s;
+  }
+  .input-field:focus { outline:none; border-color:#8b5cf6; box-shadow:0 0 0 3px rgba(139,92,246,.15); }
+  .input-field::placeholder { color:#4b5563; }
+  .station-card { transition: all .2s; cursor: pointer; }
+  .station-card:hover { border-color: rgba(139,92,246,.6); }
+  .station-card.selected { border-color:#8b5cf6; background:rgba(139,92,246,.1); box-shadow:0 0 20px rgba(139,92,246,.2); }
+  .step-circle { transition: all .3s; }
+</style>
+{{end}}
+
+{{define "content"}}
+<!-- Success Screen -->
+{{if .Success}}
+<div class="min-h-screen flex items-center justify-center bg-black pt-20 px-4">
+  <div class="max-w-md w-full text-center">
+    <!-- Icon -->
+    <div class="relative inline-flex mb-8">
+      <div class="w-24 h-24 rounded-full bg-green-500/10 border border-green-500/30 flex items-center justify-center">
+        <svg class="w-12 h-12 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+      </div>
+      <div class="absolute inset-0 rounded-full bg-green-500/10 animate-ping"></div>
+    </div>
+    <!-- Heading -->
+    <h1 class="font-display text-4xl font-black text-white mb-2">Booking Confirmed!</h1>
+    <p class="text-gray-400 mb-8">Your session is reserved. Show this reference at reception.</p>
+    <!-- Ref card -->
+    <div class="bg-gray-900 border border-green-500/30 rounded-2xl px-8 py-6 mb-8">
+      <p class="text-gray-500 text-xs font-semibold uppercase tracking-widest mb-2">Booking Reference</p>
+      <p class="font-display text-3xl font-black text-green-400 tracking-wider">{{.BookRef}}</p>
+    </div>
+    <!-- Actions -->
+    <div class="flex flex-col sm:flex-row gap-3 justify-center">
+      <a href="/book" class="bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-bold px-6 py-3 rounded-xl transition-all text-sm">
+        Make Another Booking
+      </a>
+      <a href="/" class="bg-gray-800 hover:bg-gray-700 border border-gray-700 text-white font-bold px-6 py-3 rounded-xl transition-all text-sm">
+        Back to Home
+      </a>
+    </div>
+  </div>
+</div>
+{{else}}
+
+<!-- Hero -->
+<section class="relative py-20 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-gray-900 via-black to-purple-900/20"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-flex items-center gap-2 bg-purple-500/20 border border-purple-500/40 rounded-full px-4 py-1.5 text-purple-300 text-sm font-medium mb-6">
+      <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      ONLINE BOOKING — RESERVE YOUR STATION
+    </div>
+    <h1 class="font-display text-5xl md:text-6xl font-black text-white mb-4">
+      BOOK YOUR <span class="bg-gradient-to-r from-purple-400 to-cyan-400 bg-clip-text text-transparent">SESSION</span>
+    </h1>
+    <p class="text-gray-400 text-lg max-w-xl mx-auto">Reserve online, pay at the venue. Your station will be ready when you arrive.</p>
+  </div>
+</section>
+
+<!-- Booking Wizard -->
+<section class="py-12 bg-black">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8"
+    x-data="{
+      step: 1,
+      type: '',
+      stationId: '',
+      stationMonitor: '',
+      stationMax: 1,
+      stationName: '',
+      stationRate: 0,
+      slotId: '',
+      slotLabel: '',
+      duration: 1,
+      date: '',
+      name: '',
+      email: '',
+      phone: '',
+      notes: '',
+      calYear: new Date().getFullYear(),
+      calMonth: new Date().getMonth(),
+      total() { return this.stationRate * this.duration },
+      canStep2() { return this.type && this.stationId },
+      canStep3() { return this.canStep2() && this.slotId && this.date && this.duration >= 1 },
+      canSubmit() { return this.canStep3() && this.name && this.email && this.phone },
+      calMonthLabel() {
+        return new Date(this.calYear, this.calMonth).toLocaleString('default', { month: 'long', year: 'numeric' });
+      },
+      prevMonth() {
+        const now = new Date();
+        if (this.calYear === now.getFullYear() && this.calMonth === now.getMonth()) return;
+        if (this.calMonth === 0) { this.calMonth = 11; this.calYear--; } else this.calMonth--;
+      },
+      nextMonth() {
+        if (this.calMonth === 11) { this.calMonth = 0; this.calYear++; } else this.calMonth++;
+      },
+      calDaysBefore() {
+        return Array.from({ length: new Date(this.calYear, this.calMonth, 1).getDay() });
+      },
+      calDaysInMonth() {
+        const total = new Date(this.calYear, this.calMonth + 1, 0).getDate();
+        return Array.from({ length: total }, (_, i) => i + 1);
+      },
+      isPast(day) {
+        const d = new Date(this.calYear, this.calMonth, day);
+        const today = new Date(); today.setHours(0,0,0,0);
+        return d < today;
+      },
+      isSelected(day) {
+        const d = new Date(this.calYear, this.calMonth, day);
+        return this.date === d.toISOString().split('T')[0];
+      },
+      isToday(day) {
+        const d = new Date(this.calYear, this.calMonth, day);
+        const t = new Date();
+        return d.getDate()===t.getDate() && d.getMonth()===t.getMonth() && d.getFullYear()===t.getFullYear();
+      },
+      selectDay(day) {
+        if (this.isPast(day)) return;
+        this.date = new Date(this.calYear, this.calMonth, day).toISOString().split('T')[0];
+      },
+      calOpen: false,
+      calIsAtMin() {
+        const now = new Date();
+        return this.calYear === now.getFullYear() && this.calMonth === now.getMonth();
+      },
+      friendlyDate() {
+        if (!this.date) return '';
+        const [y,m,d] = this.date.split('-');
+        return new Date(y, m-1, d).toLocaleDateString('en-IN', { weekday:'short', day:'numeric', month:'long', year:'numeric' });
+      }
+    }">
+
+    <!-- Step indicators -->
+    <div class="flex items-center justify-center gap-0 mb-12">
+      <div class="flex items-center gap-2">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2 transition-all"
+          :class="step>=1?'bg-purple-600 border-purple-600 text-white':'border-gray-700 text-gray-500'">1</div>
+        <span class="text-sm font-medium hidden sm:block" :class="step>=1?'text-white':'text-gray-600'">Choose Station</span>
+      </div>
+      <div class="w-12 sm:w-20 h-0.5 mx-2 transition-all" :class="step>=2?'bg-purple-600':'bg-gray-700'"></div>
+      <div class="flex items-center gap-2">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2"
+          :class="step>=2?'bg-purple-600 border-purple-600 text-white':'border-gray-700 text-gray-500'">2</div>
+        <span class="text-sm font-medium hidden sm:block" :class="step>=2?'text-white':'text-gray-600'">Pick Time</span>
+      </div>
+      <div class="w-12 sm:w-20 h-0.5 mx-2" :class="step>=3?'bg-purple-600':'bg-gray-700'"></div>
+      <div class="flex items-center gap-2">
+        <div class="step-circle w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold border-2"
+          :class="step>=3?'bg-purple-600 border-purple-600 text-white':'border-gray-700 text-gray-500'">3</div>
+        <span class="text-sm font-medium hidden sm:block" :class="step>=3?'text-white':'text-gray-600'">Your Details</span>
+      </div>
+    </div>
+
+    <!-- STEP 1: Choose station type + station -->
+    <div x-show="step===1">
+      <h2 class="font-display text-2xl font-bold text-white mb-6 text-center">Select Your Gaming Station</h2>
+      <!-- Type toggle -->
+      <div class="flex flex-wrap gap-3 mb-8 justify-center">
+        <button @click="type='pc'; stationId=''; stationName=''; stationRate=0; stationMonitor=''; stationMax=1"
+          :class="type==='pc'?'bg-purple-600 text-white border-purple-600':'bg-gray-900 text-gray-400 border-gray-700 hover:border-gray-500'"
+          class="flex-1 min-w-[8rem] max-w-xs border rounded-xl py-3 font-bold text-sm transition-all flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          Gaming PC
+        </button>
+        <button @click="type='ps4'; stationId=''; stationName=''; stationRate=0; stationMonitor=''; stationMax=1"
+          :class="type==='ps4'?'bg-cyan-600 text-white border-cyan-600':'bg-gray-900 text-gray-400 border-gray-700 hover:border-gray-500'"
+          class="flex-1 min-w-[8rem] max-w-xs border rounded-xl py-3 font-bold text-sm transition-all flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>
+          PS4 Console
+        </button>
+        {{if .Cars}}
+        <button @click="type='car_controller'; stationId=''; stationName=''; stationRate=0; stationMonitor=''; stationMax=1"
+          :class="type==='car_controller'?'bg-amber-600 text-white border-amber-600':'bg-gray-900 text-gray-400 border-gray-700 hover:border-gray-500'"
+          class="flex-1 min-w-[8rem] max-w-xs border rounded-xl py-3 font-bold text-sm transition-all flex items-center justify-center gap-2">
+          <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+          Car Simulator
+        </button>
+        {{end}}
+      </div>
+
+      <!-- PC list -->
+      <div x-show="type==='pc'" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {{if .PCs}}
+        {{range $i, $item := .PCs}}
+        <div class="station-card bg-gray-900 border border-gray-700 rounded-xl p-4 text-center"
+          :class="stationId==='{{$item.ID}}'?'selected':''"
+          @click="stationId='{{$item.ID}}'; stationName='PC Station #{{add $i 1}}'; stationRate={{$item.PricePerHr}}; stationMonitor='{{$item.MonitorSize}}'; stationMax={{$item.MaxPeople}}">
+          <div class="w-8 h-8 rounded-lg bg-purple-500/20 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-4 h-4 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          </div>
+          <div class="font-display text-sm font-bold text-white mb-1">PC #{{add $i 1}}</div>
+          {{if $item.MonitorSize}}<div class="text-xs text-gray-500 mb-1">{{$item.MonitorSize}}</div>{{end}}
+          <div class="text-xs text-gray-500 mb-2">Up to {{$item.MaxPeople}} {{if eq $item.MaxPeople 1}}person{{else}}people{{end}}</div>
+          <div class="text-purple-400 font-bold text-sm">&#x20B9;{{printf "%.0f" $item.PricePerHr}}/hr</div>
+        </div>
+        {{end}}
+        {{else}}
+        <div class="col-span-4 py-12 text-center text-gray-600 text-sm">No PC stations available. Check back soon.</div>
+        {{end}}
+      </div>
+
+      <!-- PS4 list -->
+      <div x-show="type==='ps4'" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {{if .PS4s}}
+        {{range $i, $item := .PS4s}}
+        <div class="station-card bg-gray-900 border border-gray-700 rounded-xl p-4 text-center"
+          :class="stationId==='{{$item.ID}}'?'selected':''"
+          @click="stationId='{{$item.ID}}'; stationName='PS4 Station #{{add $i 1}}'; stationRate={{$item.PricePerHr}}; stationMonitor='{{$item.MonitorSize}}'; stationMax={{$item.MaxPeople}}">
+          <div class="w-8 h-8 rounded-lg bg-cyan-500/20 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-4 h-4 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M11 4a2 2 0 114 0v1a1 1 0 001 1h3a1 1 0 011 1v3a1 1 0 01-1 1h-1a2 2 0 100 4h1a1 1 0 011 1v3a1 1 0 01-1 1h-3a1 1 0 01-1-1v-1a2 2 0 10-4 0v1a1 1 0 01-1 1H7a1 1 0 01-1-1v-3a1 1 0 00-1-1H4a2 2 0 110-4h1a1 1 0 001-1V7a1 1 0 011-1h3a1 1 0 001-1V4z"/></svg>
+          </div>
+          <div class="font-display text-sm font-bold text-white mb-1">PS4 #{{add $i 1}}</div>
+          {{if $item.MonitorSize}}<div class="text-xs text-gray-500 mb-1">{{$item.MonitorSize}}</div>{{end}}
+          <div class="text-xs text-gray-500 mb-2">Up to {{$item.MaxPeople}} {{if eq $item.MaxPeople 1}}person{{else}}people{{end}}</div>
+          <div class="text-cyan-400 font-bold text-sm">&#x20B9;{{printf "%.0f" $item.PricePerHr}}/hr</div>
+        </div>
+        {{end}}
+        {{else}}
+        <div class="col-span-4 py-12 text-center text-gray-600 text-sm">No PS4 stations available. Check back soon.</div>
+        {{end}}
+      </div>
+
+      <!-- Car Controller list -->
+      <div x-show="type==='car_controller'" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        {{if .Cars}}
+        {{range $i, $item := .Cars}}
+        <div class="station-card bg-gray-900 border border-gray-700 rounded-xl p-4 text-center"
+          :class="stationId==='{{$item.ID}}'?'selected':''"
+          @click="stationId='{{$item.ID}}'; stationName='Car Sim #{{add $i 1}}'; stationRate={{$item.PricePerHr}}; stationMonitor='{{$item.MonitorSize}}'; stationMax={{$item.MaxPeople}}">
+          <div class="w-8 h-8 rounded-lg bg-amber-500/20 flex items-center justify-center mx-auto mb-2">
+            <svg class="w-4 h-4 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/><path stroke-linecap="round" stroke-linejoin="round" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/></svg>
+          </div>
+          <div class="font-display text-sm font-bold text-white mb-1">Car Sim #{{add $i 1}}</div>
+          {{if $item.MonitorSize}}<div class="text-xs text-gray-500 mb-1">{{$item.MonitorSize}}</div>{{end}}
+          <div class="text-xs text-gray-500 mb-2">Up to {{$item.MaxPeople}} {{if eq $item.MaxPeople 1}}person{{else}}people{{end}}</div>
+          <div class="text-amber-400 font-bold text-sm">&#x20B9;{{printf "%.0f" $item.PricePerHr}}/hr</div>
+        </div>
+        {{end}}
+        {{else}}
+        <div class="col-span-4 py-12 text-center text-gray-600 text-sm">No car simulators available. Check back soon.</div>
+        {{end}}
+      </div>
+
+      <div class="mt-8 flex justify-end">
+        <button @click="step=2" :disabled="!canStep2()"
+          class="bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-bold px-8 py-3 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:from-purple-500 hover:to-cyan-500">
+          Continue →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Date + Slot + Duration -->
+    <div x-show="step===2">
+      <h2 class="font-display text-2xl font-bold text-white mb-2 text-center">Pick Your Date &amp; Time</h2>
+      <p class="text-gray-500 text-sm text-center mb-8">Selected: <span class="text-purple-400 font-semibold" x-text="stationName"></span></p>
+
+      <!-- Date picker -->
+      <div class="mb-6 relative" @click.outside="calOpen = false">
+        <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Date</label>
+        <!-- Input trigger -->
+        <button type="button" @click="calOpen = !calOpen"
+          class="input-field w-full rounded-xl px-4 py-3 text-sm flex items-center justify-between gap-3 text-left"
+          :class="calOpen ? 'border-purple-500 shadow-[0_0_0_3px_rgba(139,92,246,.15)]' : ''">
+          <span :class="date ? 'text-white' : 'text-gray-600'" x-text="date ? friendlyDate() : 'Select a date'"></span>
+          <svg class="w-4 h-4 text-gray-500 flex-shrink-0 transition-transform" :class="calOpen ? 'rotate-180' : ''" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+        </button>
+        <!-- Calendar dropdown -->
+        <div x-show="calOpen" x-transition:enter="transition ease-out duration-150" x-transition:enter-start="opacity-0 -translate-y-2" x-transition:enter-end="opacity-100 translate-y-0"
+          class="absolute z-30 left-0 mt-2 bg-gray-900 border border-gray-700 rounded-2xl p-4 shadow-2xl shadow-black/60 w-72">
+          <!-- Month nav -->
+          <div class="flex items-center justify-between mb-3">
+            <button type="button" @click="prevMonth()"
+              :disabled="calIsAtMin()"
+              :class="calIsAtMin() ? 'text-gray-700 cursor-not-allowed' : 'text-gray-400 hover:text-white hover:bg-gray-700'"
+              class="w-7 h-7 rounded-lg flex items-center justify-center transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/></svg>
+            </button>
+            <span class="font-display font-bold text-white text-sm" x-text="calMonthLabel()"></span>
+            <button type="button" @click="nextMonth()"
+              class="w-7 h-7 rounded-lg flex items-center justify-center text-gray-400 hover:text-white hover:bg-gray-700 transition-colors">
+              <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+          <!-- Day headers -->
+          <div class="grid grid-cols-7 mb-1">
+            <template x-for="h in ['Su','Mo','Tu','We','Th','Fr','Sa']">
+              <div class="text-center text-xs text-gray-500 font-semibold py-0.5" x-text="h"></div>
+            </template>
+          </div>
+          <!-- Day cells -->
+          <div class="grid grid-cols-7 gap-0.5">
+            <template x-for="_ in calDaysBefore()"><div class="w-9 h-9"></div></template>
+            <template x-for="day in calDaysInMonth()" :key="day">
+              <button type="button" @click="selectDay(day); if(!isPast(day)) calOpen = false"
+                :disabled="isPast(day)"
+                :class="{
+                  'bg-purple-600 text-white shadow-lg shadow-purple-900/40': isSelected(day),
+                  'border border-cyan-500/50 text-cyan-400 bg-cyan-500/10': isToday(day) && !isSelected(day),
+                  'text-gray-400 hover:bg-gray-700 hover:text-white': !isSelected(day) && !isPast(day) && !isToday(day),
+                  'text-gray-700 cursor-not-allowed': isPast(day)
+                }"
+                class="w-9 h-9 rounded-lg text-xs font-medium transition-all flex items-center justify-center">
+                <span x-text="day"></span>
+              </button>
+            </template>
+          </div>
+        </div>
+      </div>
+
+      <!-- Duration -->
+      <div class="mb-6">
+        <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Duration (hours)</label>
+        <div class="grid grid-cols-3 sm:grid-cols-6 gap-2">
+          <template x-for="h in [1,2,3,4,5,6]" :key="h">
+            <button type="button" @click="duration = h"
+              :class="duration===h ? 'bg-purple-600 border-purple-600 text-white' : 'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'"
+              class="border rounded-xl py-3 text-sm font-bold transition-all">
+              <span x-text="h + 'h'"></span>
+            </button>
+          </template>
+        </div>
+      </div>
+
+      <!-- Time slots -->
+      <div class="mb-6">
+        <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-3">Start Time</label>
+        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-2">
+          {{range .Slots}}
+          <button type="button"
+            @click="slotId='{{.ID}}'; slotLabel='{{.Label}}'"
+            :class="slotId==='{{.ID}}'?'bg-purple-600 border-purple-600 text-white':'bg-gray-900 border-gray-700 text-gray-400 hover:border-gray-500 hover:text-white'"
+            class="border rounded-xl py-2.5 px-3 text-xs font-semibold transition-all">
+            {{.Label}}
+          </button>
+          {{end}}
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div x-show="stationId && slotId && date && duration" class="bg-gray-900 border border-gray-700 rounded-xl p-5 mb-6">
+        <div class="flex items-center justify-between mb-3">
+          <span class="text-gray-400 text-sm">Estimated Total</span>
+          <span class="font-display text-2xl font-black text-purple-400">₹<span x-text="total()"></span></span>
+        </div>
+        <div class="grid grid-cols-2 gap-3 text-sm">
+          <div><span class="text-gray-500">Station: </span><span class="text-white" x-text="stationName"></span></div>
+          <div><span class="text-gray-500">Date: </span><span class="text-white" x-text="friendlyDate()"></span></div>
+          <div><span class="text-gray-500">Start: </span><span class="text-white" x-text="slotLabel"></span></div>
+          <div><span class="text-gray-500">Duration: </span><span class="text-white" x-text="duration + ' hr'"></span></div>
+        </div>
+      </div>
+
+      <div class="flex gap-3 justify-between">
+        <button @click="step=1" class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-8 py-3 rounded-xl transition-colors border border-gray-700">← Back</button>
+        <button @click="step=3" :disabled="!canStep3()"
+          class="bg-gradient-to-r from-purple-600 to-cyan-600 text-white font-bold px-8 py-3 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed hover:from-purple-500 hover:to-cyan-500">
+          Continue →
+        </button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Customer details + submit -->
+    <div x-show="step===3">
+      <h2 class="font-display text-2xl font-bold text-white mb-2 text-center">Your Details</h2>
+      <p class="text-gray-500 text-sm text-center mb-8">Almost done! Fill in your details to confirm the booking.</p>
+
+      <form method="POST" action="/book">
+        <!-- Hidden fields -->
+        <input type="hidden" name="station_type" :value="type">
+        <input type="hidden" name="station_id" :value="stationId">
+        <input type="hidden" name="slot_id" :value="slotId">
+        <input type="hidden" name="duration" :value="duration">
+        <input type="hidden" name="booking_date" :value="date">
+
+        <div class="space-y-5">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+            <div>
+              <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Full Name <span class="text-red-500">*</span></label>
+              <input x-model="name" name="name" type="text" placeholder="Your full name" class="input-field w-full rounded-xl px-4 py-3 text-sm" required>
+            </div>
+            <div>
+              <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Email <span class="text-red-500">*</span></label>
+              <input x-model="email" name="email" type="email" placeholder="your@email.com" class="input-field w-full rounded-xl px-4 py-3 text-sm" required>
+            </div>
+          </div>
+          <div>
+            <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Phone <span class="text-red-500">*</span></label>
+            <input x-model="phone" name="phone" type="tel" placeholder="+91 98765 43210" class="input-field w-full rounded-xl px-4 py-3 text-sm" required>
+          </div>
+          <div>
+            <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Special Requests</label>
+            <textarea x-model="notes" name="notes" rows="3" placeholder="Any special requirements, game preferences, etc." class="input-field w-full rounded-xl px-4 py-3 text-sm resize-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Order summary -->
+        <div class="mt-6 bg-gradient-to-br from-purple-900/30 to-cyan-900/20 border border-purple-500/30 rounded-xl p-5">
+          <div class="font-semibold text-white mb-3">Booking Summary</div>
+          <div class="grid grid-cols-2 gap-y-2 text-sm mb-4">
+            <span class="text-gray-500">Station</span><span class="text-white" x-text="stationName"></span>
+            <span class="text-gray-500">Date</span><span class="text-white" x-text="friendlyDate()"></span>
+            <span class="text-gray-500">Start Time</span><span class="text-white" x-text="slotLabel"></span>
+            <span class="text-gray-500">Duration</span><span class="text-white" x-text="duration + ' hour(s)'"></span>
+            <span class="text-gray-500">Rate</span><span class="text-white">₹<span x-text="stationRate"></span>/hr</span>
+          </div>
+          <div class="flex items-center justify-between pt-3 border-t border-purple-500/20">
+            <span class="font-semibold text-white">Total (pay at venue)</span>
+            <span class="font-display text-xl font-black text-purple-400">₹<span x-text="total()"></span></span>
+          </div>
+        </div>
+
+        <div class="flex gap-3 justify-between mt-6">
+          <button type="button" @click="step=2" class="bg-gray-800 hover:bg-gray-700 text-white font-bold px-8 py-3 rounded-xl transition-colors border border-gray-700">← Back</button>
+          <button type="submit" :disabled="!canSubmit()"
+            class="flex-1 max-w-xs bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-bold py-3 px-8 rounded-xl transition-all disabled:opacity-40 disabled:cursor-not-allowed">
+            Confirm Booking
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+</section>
+
+<!-- Info strip -->
+<section class="py-12 bg-gray-900/30 border-t border-gray-800">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 text-center">
+      <div>
+        <svg class="w-8 h-8 text-purple-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/></svg>
+        <h3 class="font-semibold text-white text-sm mb-1">Pay At Venue</h3>
+        <p class="text-gray-500 text-xs">No online payment required. Pay when you arrive.</p>
+      </div>
+      <div>
+        <svg class="w-8 h-8 text-cyan-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+        <h3 class="font-semibold text-white text-sm mb-1">Free Cancellation</h3>
+        <p class="text-gray-500 text-xs">Cancel up to 2 hours before your session.</p>
+      </div>
+      <div>
+        <svg class="w-8 h-8 text-amber-400 mx-auto mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <h3 class="font-semibold text-white text-sm mb-1">Ready When You Arrive</h3>
+        <p class="text-gray-500 text-xs">Your station will be set up and waiting for you.</p>
+      </div>
+    </div>
+  </div>
+</section>
+{{end}}
+{{end}}

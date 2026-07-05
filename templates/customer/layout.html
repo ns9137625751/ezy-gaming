@@ -1,0 +1,42 @@
+{{define "customer_layout"}}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Profile — Ezy Gaming</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: { extend: { fontFamily: { display: ['Orbitron','sans-serif'], inter: ['Inter','sans-serif'] } } }
+    }
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <meta name="robots" content="noindex,nofollow">
+</head>
+<body class="bg-[#0a0a0f] text-white font-inter min-h-screen">
+
+  <!-- Top nav -->
+  <header class="border-b border-white/5 bg-[#0d0d18]">
+    <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+      <a href="/" class="flex items-center gap-3">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-600 to-cyan-500 flex items-center justify-center">
+          <img src="/static/images/logo_without_bac.png" alt="" class="h-5 object-contain">
+        </div>
+        <span class="font-display text-sm font-black text-white tracking-wider">EZY GAMING</span>
+      </a>
+      <div class="flex items-center gap-4">
+        <span class="text-sm text-gray-400">Hi, <span class="text-white font-medium">{{.Customer.Name}}</span></span>
+        <a href="/logout" class="text-xs text-gray-500 hover:text-red-400 transition-colors">Sign out</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Content -->
+  <main class="max-w-5xl mx-auto px-6 py-10">
+    {{block "customer_content" .}}{{end}}
+  </main>
+
+</body>
+</html>
+{{end}}

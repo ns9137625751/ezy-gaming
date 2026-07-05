@@ -1,0 +1,87 @@
+{{define "navbar"}}
+<nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300" id="navbar"
+     x-data="{ open: false, scrolled: false }"
+     @scroll.window="scrolled = window.scrollY > 30">
+  <div class="absolute inset-0 transition-all duration-300"
+       :class="scrolled ? 'bg-[#0a0a0f]/95 backdrop-blur-xl border-b border-cyan-500/10 shadow-lg shadow-black/50' : 'bg-transparent'">
+  </div>
+
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-16 lg:h-20">
+
+      {{/* Logo */}}
+      <a href="/" class="flex items-center group">
+        <img src="/static/images/logo_without_bac.png"
+             alt="Ezy Gaming Zone — Gaming Café in Nikol, Ahmedabad"
+             class="h-12 lg:h-14 w-auto object-contain transition-opacity duration-200 group-hover:opacity-85"
+             width="180" height="56">
+      </a>
+
+      {{/* Desktop Nav */}}
+      <div class="hidden lg:flex items-center gap-1">
+        <a href="/" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">Home</a>
+        <a href="/gaming-pcs" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">Gaming PCs</a>
+        <a href="/ps5-zone" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-purple-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">PS5 Zone</a>
+        <a href="/pricing" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">Pricing</a>
+        <a href="/memberships" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">Membership</a>
+        <a href="/tournaments" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-yellow-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">Tournaments</a>
+        <a href="/contact" class="nav-link px-4 py-2 text-sm font-medium text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg transition-all duration-200 font-rajdhani tracking-wide">Contact</a>
+      </div>
+
+      {{/* CTA */}}
+      <div class="hidden lg:flex items-center gap-3">
+        {{if .IsLoggedIn}}
+        <a href="/me" class="px-4 py-2.5 rounded-lg border border-purple-500/40 text-sm font-rajdhani font-semibold tracking-wider text-purple-300 hover:text-white hover:border-purple-400 hover:bg-purple-500/15 transition-all duration-200">My Profile</a>
+        {{else}}
+        <a href="/login" class="px-4 py-2.5 rounded-lg border border-white/10 text-sm font-rajdhani font-semibold tracking-wider text-gray-300 hover:text-white hover:border-purple-500/50 hover:bg-purple-500/10 transition-all duration-200">Login</a>
+        {{end}}
+        <a href="/book" class="relative group px-5 py-2.5 rounded-lg font-rajdhani font-bold text-sm tracking-wider overflow-hidden transition-all duration-300">
+          <div class="absolute inset-0 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-lg"></div>
+          <div class="absolute inset-0 bg-gradient-to-r from-cyan-400 to-purple-500 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+          <div class="absolute inset-0 rounded-lg shadow-lg shadow-cyan-500/0 group-hover:shadow-cyan-500/40 transition-all duration-300"></div>
+          <span class="relative text-white">⚡ BOOK NOW</span>
+        </a>
+      </div>
+
+      {{/* Mobile hamburger */}}
+      <button @click="open = !open"
+              class="lg:hidden relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 group">
+        <span class="w-6 h-0.5 bg-gray-300 group-hover:bg-cyan-400 transition-all duration-300 origin-center"
+              :class="open ? 'rotate-45 translate-y-2' : ''"></span>
+        <span class="w-6 h-0.5 bg-gray-300 group-hover:bg-cyan-400 transition-all duration-300"
+              :class="open ? 'opacity-0' : ''"></span>
+        <span class="w-6 h-0.5 bg-gray-300 group-hover:bg-cyan-400 transition-all duration-300 origin-center"
+              :class="open ? '-rotate-45 -translate-y-2' : ''"></span>
+      </button>
+    </div>
+
+    {{/* Mobile menu */}}
+    <div x-show="open" x-transition:enter="transition ease-out duration-200"
+         x-transition:enter-start="opacity-0 -translate-y-2"
+         x-transition:enter-end="opacity-100 translate-y-0"
+         x-transition:leave="transition ease-in duration-150"
+         x-transition:leave-start="opacity-100 translate-y-0"
+         x-transition:leave-end="opacity-0 -translate-y-2"
+         class="lg:hidden bg-[#0f0f1a]/98 backdrop-blur-xl border-t border-white/5 rounded-b-2xl overflow-hidden">
+      <div class="flex flex-col p-4 gap-1">
+        <a href="/" class="px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Home</a>
+        <a href="/gaming-pcs" class="px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Gaming PCs</a>
+        <a href="/ps5-zone" class="px-4 py-3 text-gray-300 hover:text-purple-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">PS5 Zone</a>
+        <a href="/pricing" class="px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Pricing</a>
+        <a href="/memberships" class="px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Membership</a>
+        <a href="/tournaments" class="px-4 py-3 text-gray-300 hover:text-yellow-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Tournaments</a>
+        <a href="/gallery" class="px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Gallery</a>
+        <a href="/contact" class="px-4 py-3 text-gray-300 hover:text-cyan-400 hover:bg-white/5 rounded-lg font-rajdhani font-semibold tracking-wide transition-all duration-200">Contact</a>
+        <div class="pt-2 mt-1 border-t border-white/5 flex flex-col gap-2">
+          {{if .IsLoggedIn}}
+          <a href="/me" class="block w-full text-center px-4 py-3 border border-purple-500/40 rounded-lg font-rajdhani font-semibold tracking-wider text-purple-300">My Profile</a>
+          {{else}}
+          <a href="/login" class="block w-full text-center px-4 py-3 border border-white/10 rounded-lg font-rajdhani font-semibold tracking-wider text-gray-300">Login</a>
+          {{end}}
+          <a href="/book" class="block w-full text-center px-4 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 rounded-lg font-rajdhani font-bold tracking-wider text-white">⚡ BOOK NOW</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+{{end}}

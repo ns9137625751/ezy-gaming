@@ -1,0 +1,58 @@
+{{define "admin_login"}}
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login — Ezy Gaming</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>tailwind.config = { theme: { extend: { fontFamily: { display: ['Orbitron','sans-serif'] } } } }</script>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <meta name="robots" content="noindex,nofollow">
+</head>
+<body class="bg-[#0a0a0f] text-white font-[Inter] h-full flex items-center justify-center px-4">
+
+  <div class="w-full max-w-sm">
+    <!-- Logo -->
+    <div class="text-center mb-8">
+      <img src="/static/images/logo_without_bac.png" alt="Ezy Gaming" class="h-14 mx-auto mb-4 object-contain">
+      <h1 class="font-display text-xl font-black text-white tracking-wider">ADMIN PANEL</h1>
+      <p class="text-gray-500 text-xs mt-1">Ezy Gaming Zone — Staff Access</p>
+    </div>
+
+    <!-- Card -->
+    <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-8">
+      {{if .Error}}
+      <div class="bg-red-500/10 border border-red-500/30 rounded-xl px-4 py-3 mb-6 text-red-400 text-sm">
+        {{.Error}}
+      </div>
+      {{end}}
+
+      <form method="POST" action="/admin/login" class="space-y-5">
+        <div>
+          <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Email</label>
+          <input name="email" type="email" required autocomplete="email"
+            placeholder="admin@ezygaming.in"
+            class="w-full bg-[#0a0a0f] border border-gray-700 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all">
+        </div>
+        <div>
+          <label class="block text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Password</label>
+          <input name="password" type="password" required autocomplete="current-password"
+            placeholder="••••••••"
+            class="w-full bg-[#0a0a0f] border border-gray-700 focus:border-purple-500 focus:outline-none focus:ring-2 focus:ring-purple-500/20 rounded-xl px-4 py-3 text-sm text-white placeholder-gray-600 transition-all">
+        </div>
+        <button type="submit"
+          class="w-full bg-gradient-to-r from-purple-600 to-cyan-600 hover:from-purple-500 hover:to-cyan-500 text-white font-bold py-3 rounded-xl transition-all text-sm tracking-wide">
+          Sign In
+        </button>
+      </form>
+    </div>
+
+    <p class="text-center text-gray-700 text-xs mt-6">
+      <a href="/" class="hover:text-gray-500 transition-colors">← Back to website</a>
+    </p>
+  </div>
+
+</body>
+</html>
+{{end}}

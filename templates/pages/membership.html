@@ -1,0 +1,170 @@
+{{template "base" .}}
+
+{{define "extra_head"}}
+<style>
+  .plan-card { transition: transform .3s, box-shadow .3s; }
+  .plan-card:hover { transform: translateY(-8px); }
+  .badge-popular { box-shadow: 0 0 50px rgba(245,158,11,.35); border-color: #f59e0b !important; }
+  .badge-value   { box-shadow: 0 0 40px rgba(139,92,246,.35); border-color: #8b5cf6 !important; }
+</style>
+{{end}}
+
+{{define "content"}}
+<!-- Hero -->
+<section class="relative py-24 overflow-hidden">
+  <div class="absolute inset-0 bg-gradient-to-br from-amber-900/30 via-black to-purple-900/20"></div>
+  <div class="absolute inset-0" style="background-image:radial-gradient(ellipse at 50% 0%,rgba(245,158,11,.15) 0%,transparent 60%)"></div>
+  <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <div class="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-500/40 rounded-full px-4 py-1.5 text-amber-300 text-sm font-medium mb-6">
+      <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"/></svg>
+      MEMBERSHIP PLANS — SAVE MORE, PLAY MORE
+    </div>
+    <h1 class="font-display text-5xl md:text-7xl font-black text-white mb-6">
+      BECOME A <span class="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">MEMBER</span>
+    </h1>
+    <p class="text-gray-400 text-lg max-w-2xl mx-auto mb-10">
+      Unlock exclusive discounts, priority booking, member tournaments, and unlimited perks. The more you play, the more you save.
+    </p>
+    <div class="inline-flex flex-wrap justify-center gap-6 text-sm">
+      <div class="flex items-center gap-2 text-green-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>No lock-in period</div>
+      <div class="flex items-center gap-2 text-green-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Cancel anytime</div>
+      <div class="flex items-center gap-2 text-green-400"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>Instant activation</div>
+    </div>
+  </div>
+</section>
+
+<!-- Plans Grid -->
+<section class="py-16 bg-black">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      {{range .Plans}}
+      <div class="plan-card bg-gray-900 border border-gray-700 rounded-2xl overflow-hidden relative flex flex-col
+        {{if eq .BadgeText "Most Popular"}}badge-popular
+        {{else if eq .BadgeText "Best Value"}}badge-value{{end}}">
+        {{if .BadgeText}}
+        <div class="absolute top-3 left-1/2 -translate-x-1/2 text-xs font-black px-3 py-1 rounded-full whitespace-nowrap z-10
+          {{if eq .BadgeText "Most Popular"}}bg-amber-500 text-black
+          {{else if eq .BadgeText "Best Value"}}bg-purple-500 text-white
+          {{else}}bg-gray-700 text-white{{end}}">
+          {{if eq .BadgeText "Most Popular"}}⭐ {{end}}{{.BadgeText}}
+        </div>
+        {{end}}
+        <!-- Header -->
+        <div class="pt-10 pb-6 px-6 border-b border-gray-800 text-center">
+          <div class="font-display text-sm font-bold tracking-widest mb-2 uppercase
+            {{if eq .Color "orange"}}text-amber-400
+            {{else if eq .Color "gold"}}text-yellow-400
+            {{else if eq .Color "purple"}}text-purple-400
+            {{else}}text-cyan-400{{end}}">
+            {{.Name}}
+          </div>
+          <div class="flex items-end justify-center gap-1 mb-1">
+            <span class="font-display text-4xl font-black text-white">₹{{printf "%.0f" .Price}}</span>
+            <span class="text-gray-500 mb-1">/month</span>
+          </div>
+          <div class="text-gray-500 text-xs mt-2">{{.PCHours}} PC hrs + {{.PS5Hours}} PS5 hrs included</div>
+          <div class="text-green-400 text-xs mt-1 font-semibold">{{.DiscountPct}}% off walk-in rates</div>
+        </div>
+        <!-- Features -->
+        <div class="p-6 flex-1">
+          <ul class="space-y-2.5">
+            {{range .Benefits}}
+            <li class="flex items-start gap-2.5 text-sm text-gray-300">
+              <svg class="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg>
+              {{.}}
+            </li>
+            {{end}}
+          </ul>
+        </div>
+        <!-- CTA -->
+        <div class="p-6 pt-0">
+          <a href="/contact" class="block text-center font-bold py-3 px-6 rounded-xl transition-all
+            {{if eq .BadgeText "Most Popular"}}bg-amber-500 hover:bg-amber-400 text-black
+            {{else if eq .BadgeText "Best Value"}}bg-purple-600 hover:bg-purple-500 text-white
+            {{else}}bg-gray-800 hover:bg-gray-700 text-white border border-gray-700{{end}}">
+            Get {{.Name}} Plan
+          </a>
+          <p class="text-gray-600 text-xs text-center mt-2">Visit reception or call to activate</p>
+        </div>
+      </div>
+      {{end}}
+    </div>
+  </div>
+</section>
+
+<!-- Comparison Table -->
+<section class="py-16 bg-gray-900/30 border-t border-gray-800">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="font-display text-3xl font-bold text-white text-center mb-10">Plan Comparison</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-700">
+            <th class="text-left py-3 px-4 text-gray-400 font-medium">Feature</th>
+            <th class="py-3 px-4 text-center text-gray-400 font-medium">Bronze</th>
+            <th class="py-3 px-4 text-center text-gray-300 font-medium">Silver</th>
+            <th class="py-3 px-4 text-center text-amber-400 font-bold">Gold ⭐</th>
+            <th class="py-3 px-4 text-center text-purple-400 font-medium">Platinum</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-800">
+          <tr>
+            <td class="py-3 px-4 text-gray-300">Monthly PC Hours</td>
+            <td class="py-3 px-4 text-center text-white">10 hrs</td>
+            <td class="py-3 px-4 text-center text-white">20 hrs</td>
+            <td class="py-3 px-4 text-center text-white font-bold">40 hrs</td>
+            <td class="py-3 px-4 text-center text-white">Unlimited</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 text-gray-300">Walk-in Discount</td>
+            <td class="py-3 px-4 text-center text-white">10%</td>
+            <td class="py-3 px-4 text-center text-white">15%</td>
+            <td class="py-3 px-4 text-center text-white font-bold">20%</td>
+            <td class="py-3 px-4 text-center text-white">30%</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 text-gray-300">Priority Booking</td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 text-gray-300">Member Tournaments</td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 text-gray-300">Free Snacks</td>
+            <td class="py-3 px-4 text-center text-white">—</td>
+            <td class="py-3 px-4 text-center text-white">1×/month</td>
+            <td class="py-3 px-4 text-center text-white font-bold">3×/month</td>
+            <td class="py-3 px-4 text-center text-white">Unlimited</td>
+          </tr>
+          <tr>
+            <td class="py-3 px-4 text-gray-300">Private Gaming Locker</td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-red-500 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg></td>
+            <td class="py-3 px-4 text-center"><svg class="w-4 h-4 text-green-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7"/></svg></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="py-16 bg-black border-t border-gray-800">
+  <div class="max-w-2xl mx-auto px-4 text-center">
+    <h2 class="font-display text-3xl font-bold text-white mb-3">Questions About Membership?</h2>
+    <p class="text-gray-400 mb-8">Our team is happy to help you pick the right plan. Walk in or give us a call.</p>
+    <div class="flex flex-col sm:flex-row gap-4 justify-center">
+      <a href="/contact" class="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 text-black font-bold px-8 py-4 rounded-xl hover:opacity-90 transition-opacity">Contact Us</a>
+      <a href="/pricing" class="inline-flex items-center gap-2 bg-gray-800 hover:bg-gray-700 text-white font-bold px-8 py-4 rounded-xl transition-colors border border-gray-700">See Hourly Rates</a>
+    </div>
+  </div>
+</section>
+{{end}}

@@ -1,0 +1,300 @@
+{{define "admin_content"}}
+<div x-data="bookingModal()" @keydown.escape.window="open=false">
+
+<!-- Flash banner -->
+{{if .Flash}}
+<div class="mb-6 px-4 py-3 rounded-xl text-sm font-medium flex items-center gap-2
+  {{if eq .Flash "booked"}}bg-green-500/15 border border-green-500/30 text-green-400
+  {{else if eq .Flash "invalid"}}bg-amber-500/15 border border-amber-500/30 text-amber-400
+  {{else}}bg-red-500/15 border border-red-500/30 text-red-400{{end}}">
+  {{if eq .Flash "booked"}}Booking created successfully.
+  {{else if eq .Flash "invalid"}}Please fill all required fields correctly.
+  {{else}}Something went wrong. Please try again.{{end}}
+</div>
+{{end}}
+
+<!-- Stat cards -->
+<div class="grid grid-cols-2 {{if eq .User.Role "admin"}}lg:grid-cols-4{{else}}lg:grid-cols-3{{end}} gap-4 mb-8">
+
+  <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-5">
+    <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3">Total Bookings</p>
+    <p class="font-display text-3xl font-black text-white">{{.TotalBookings}}</p>
+  </div>
+
+  <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-5">
+    <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3">Today</p>
+    <p class="font-display text-3xl font-black text-cyan-400">{{.TodayBookings}}</p>
+  </div>
+
+  <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-5">
+    <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3">Pending</p>
+    <p class="font-display text-3xl font-black text-amber-400">{{.PendingBookings}}</p>
+  </div>
+
+  {{if eq .User.Role "admin"}}
+  <div class="bg-[#12121a] border border-gray-800 rounded-2xl p-5">
+    <p class="text-gray-500 text-xs font-semibold uppercase tracking-wider mb-3">Revenue</p>
+    <p class="font-display text-3xl font-black text-green-400">₹{{printf "%.0f" .Revenue}}</p>
+  </div>
+  {{end}}
+</div>
+
+<!-- Quick-action cards -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+
+  <a href="/admin/inventory" class="group bg-[#12121a] border border-gray-800 hover:border-purple-500/40 rounded-2xl p-5 flex items-center gap-4 transition-all duration-200 hover:shadow-lg hover:shadow-purple-500/5">
+    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-purple-600/30 to-purple-800/20 border border-purple-500/20 flex items-center justify-center flex-shrink-0 group-hover:from-purple-600/50 transition-all">
+      <svg class="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+      </svg>
+    </div>
+    <div class="min-w-0">
+      <p class="text-white text-sm font-semibold">Inventory</p>
+      <p class="text-gray-500 text-xs mt-0.5">{{.InventoryCount}} active items · Manage stations</p>
+    </div>
+    <svg class="w-4 h-4 text-gray-600 group-hover:text-purple-400 ml-auto flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </a>
+
+  <a href="/admin/bookings" class="group bg-[#12121a] border border-gray-800 hover:border-cyan-500/40 rounded-2xl p-5 flex items-center gap-4 transition-all duration-200 hover:shadow-lg hover:shadow-cyan-500/5">
+    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-cyan-600/30 to-cyan-800/20 border border-cyan-500/20 flex items-center justify-center flex-shrink-0 group-hover:from-cyan-600/50 transition-all">
+      <svg class="w-5 h-5 text-cyan-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+      </svg>
+    </div>
+    <div class="min-w-0">
+      <p class="text-white text-sm font-semibold">All Bookings</p>
+      <p class="text-gray-500 text-xs mt-0.5">{{.TotalBookings}} total · {{.PendingBookings}} pending</p>
+    </div>
+    <svg class="w-4 h-4 text-gray-600 group-hover:text-cyan-400 ml-auto flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </a>
+
+  {{if eq .User.Role "admin"}}
+  <a href="/admin/tournament" class="group bg-[#12121a] border border-gray-800 hover:border-green-500/40 rounded-2xl p-5 flex items-center gap-4 transition-all duration-200 hover:shadow-lg hover:shadow-green-500/5">
+    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-green-600/30 to-green-800/20 border border-green-500/20 flex items-center justify-center flex-shrink-0 group-hover:from-green-600/50 transition-all">
+      <svg class="w-5 h-5 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z"/>
+      </svg>
+    </div>
+    <div class="min-w-0">
+      <p class="text-white text-sm font-semibold">Tournaments</p>
+      <p class="text-gray-500 text-xs mt-0.5">Manage events &amp; esports</p>
+    </div>
+    <svg class="w-4 h-4 text-gray-600 group-hover:text-green-400 ml-auto flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </a>
+  <a href="/admin/contacts" class="group bg-[#12121a] border border-gray-800 hover:border-amber-500/40 rounded-2xl p-5 flex items-center gap-4 transition-all duration-200 hover:shadow-lg hover:shadow-amber-500/5">
+    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-600/30 to-amber-800/20 border border-amber-500/20 flex items-center justify-center flex-shrink-0 group-hover:from-amber-600/50 transition-all">
+      <svg class="w-5 h-5 text-amber-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+      </svg>
+    </div>
+    <div class="min-w-0">
+      <p class="text-white text-sm font-semibold">Messages</p>
+      <p class="text-gray-500 text-xs mt-0.5">{{.UnreadContacts}} unread enquiries</p>
+    </div>
+    <svg class="w-4 h-4 text-gray-600 group-hover:text-amber-400 ml-auto flex-shrink-0 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+  </a>
+  {{end}}
+
+</div>
+
+<!-- Recent bookings -->
+<div class="bg-[#12121a] border border-gray-800 rounded-2xl overflow-hidden">
+  <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+    <h2 class="font-semibold text-white text-sm">Recent Bookings</h2>
+    <div class="flex items-center gap-3">
+      <button @click="open=true"
+        class="flex items-center gap-1.5 px-3 py-1.5 bg-purple-600 hover:bg-purple-500 text-white text-xs font-semibold rounded-lg transition-colors">
+        <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M12 4v16m8-8H4"/></svg>
+        Add Booking
+      </button>
+      <a href="/admin/bookings" class="text-purple-400 hover:text-purple-300 text-xs transition-colors">View all →</a>
+    </div>
+  </div>
+  <div class="overflow-x-auto">
+    <table class="w-full text-sm">
+      <thead>
+        <tr class="border-b border-gray-800">
+          <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-6 py-3">Ref</th>
+          <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3">Customer</th>
+          <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden md:table-cell">Station</th>
+          <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Date</th>
+          <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3">Status</th>
+          {{if eq .User.Role "admin"}}
+          <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Amount</th>
+          {{end}}
+        </tr>
+      </thead>
+      <tbody class="divide-y divide-gray-800/50">
+        {{range .RecentBookings}}
+        <tr class="hover:bg-white/2 transition-colors">
+          <td class="px-6 py-3 font-mono text-xs text-purple-400 font-bold">{{.BookingRef}}</td>
+          <td class="px-4 py-3">
+            <div class="text-white text-sm font-medium">{{.CustomerName}}</div>
+            <div class="text-gray-500 text-xs">{{.CustomerPhone}}</div>
+          </td>
+          <td class="px-4 py-3 hidden md:table-cell">
+            <span class="text-xs px-2 py-1 rounded-lg {{if eq .StationType "pc"}}bg-purple-500/15 text-purple-300{{else if eq .StationType "ps4"}}bg-cyan-500/15 text-cyan-300{{else}}bg-amber-500/15 text-amber-300{{end}}">
+              {{if eq .StationType "pc"}}PC{{else if eq .StationType "ps4"}}PS4{{else}}Car{{end}} #{{.StationID}}
+            </span>
+          </td>
+          <td class="px-4 py-3 text-gray-400 text-xs hidden lg:table-cell">{{.BookingDate.Format "02 Jan 2006"}}</td>
+          <td class="px-4 py-3">
+            <span class="text-xs px-2 py-1 rounded-lg font-semibold
+              {{if eq .Status "confirmed"}}bg-green-500/15 text-green-400
+              {{else if eq .Status "pending"}}bg-amber-500/15 text-amber-400
+              {{else if eq .Status "cancelled"}}bg-red-500/15 text-red-400
+              {{else}}bg-gray-700 text-gray-400{{end}}">
+              {{.Status}}
+            </span>
+          </td>
+          {{if eq $.User.Role "admin"}}
+          <td class="px-4 py-3 text-gray-300 text-xs font-medium hidden lg:table-cell">₹{{printf "%.0f" .TotalAmount}}</td>
+          {{end}}
+        </tr>
+        {{else}}
+        <tr><td colspan="6" class="px-6 py-12 text-center text-gray-600 text-sm">No bookings yet</td></tr>
+        {{end}}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Add Booking Modal -->
+<div x-show="open" x-cloak class="fixed inset-0 z-50 flex items-center justify-center p-4">
+  <div class="absolute inset-0 bg-black/70 backdrop-blur-sm" @click="open=false"></div>
+  <div class="relative bg-[#12121a] border border-gray-700 rounded-2xl w-full max-w-lg shadow-2xl max-h-[90vh] overflow-y-auto" @click.stop>
+
+    <!-- Header -->
+    <div class="flex items-center justify-between px-6 py-4 border-b border-gray-800">
+      <h3 class="font-display font-bold text-white text-base">New Walk-in Booking</h3>
+      <button @click="open=false" class="text-gray-500 hover:text-white transition-colors">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+
+    <form action="/admin/bookings/new" method="POST" class="px-6 py-5 space-y-4">
+
+      <!-- Name + Phone -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Customer Name <span class="text-red-400">*</span></label>
+          <input type="text" name="name" required placeholder="Full name"
+            class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 transition-colors">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Mobile Number <span class="text-red-400">*</span></label>
+          <input type="tel" name="phone" required placeholder="10-digit number"
+            class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 transition-colors">
+        </div>
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-xs text-gray-400 font-medium mb-1">Email ID <span class="text-gray-600">(optional)</span></label>
+        <input type="email" name="email" placeholder="customer@email.com"
+          class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 transition-colors">
+      </div>
+
+      <!-- Station -->
+      <div>
+        <label class="block text-xs text-gray-400 font-medium mb-1">Station <span class="text-red-400">*</span></label>
+        <select name="station_id" required x-model="stationId" @change="updateRate()"
+          class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors">
+          <option value="">Select a station</option>
+          {{range .Inventory}}
+          <option value="{{.ID}}" data-rate="{{.PricePerHr}}" data-max="{{.MaxPeople}}"
+            data-type="{{.SystemType}}">
+            {{if eq .SystemType "pc"}}PC{{else if eq .SystemType "ps4"}}PS4{{else}}Car Sim{{end}}
+            #{{.ID}}{{if .MonitorSize}} — {{.MonitorSize}}{{end}} · ₹{{printf "%.0f" .PricePerHr}}/hr · up to {{.MaxPeople}} people
+          </option>
+          {{end}}
+        </select>
+      </div>
+
+      <!-- Duration + People -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Duration (hours) <span class="text-red-400">*</span></label>
+          <input type="number" name="duration" min="1" max="12" value="1" required x-model="duration" @input="calcAmount()"
+            class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">No. of People</label>
+          <input type="number" name="num_people" min="1" :max="maxPeople" :value="maxPeople"
+            class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors">
+        </div>
+      </div>
+
+      <!-- Date + Amount -->
+      <div class="grid grid-cols-2 gap-3">
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Booking Date <span class="text-red-400">*</span></label>
+          <input type="date" name="booking_date" required :value="today"
+            class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors">
+        </div>
+        <div>
+          <label class="block text-xs text-gray-400 font-medium mb-1">Amount (₹) <span class="text-red-400">*</span></label>
+          <input type="number" name="amount" min="1" step="0.01" required x-model="amount"
+            class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-purple-500 transition-colors">
+        </div>
+      </div>
+
+      <!-- Notes -->
+      <div>
+        <label class="block text-xs text-gray-400 font-medium mb-1">Notes <span class="text-gray-600">(optional)</span></label>
+        <textarea name="notes" rows="2" placeholder="Any special requests or notes..."
+          class="w-full bg-gray-900 border border-gray-700 rounded-lg px-3 py-2 text-sm text-white placeholder-gray-600 focus:outline-none focus:border-purple-500 transition-colors resize-none"></textarea>
+      </div>
+
+      <!-- Actions -->
+      <div class="flex gap-3 pt-1">
+        <button type="button" @click="open=false"
+          class="flex-1 px-4 py-2.5 bg-gray-800 hover:bg-gray-700 text-gray-300 text-sm font-medium rounded-lg transition-colors">
+          Cancel
+        </button>
+        <button type="submit"
+          class="flex-1 px-4 py-2.5 bg-purple-600 hover:bg-purple-500 text-white text-sm font-semibold rounded-lg transition-colors">
+          Confirm Booking
+        </button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+</div><!-- end x-data -->
+
+<script>
+function bookingModal() {
+  return {
+    open: false,
+    stationId: '',
+    duration: 1,
+    amount: 0,
+    maxPeople: 1,
+    today: '{{.Today}}',
+    rates: {},
+    init() {
+      document.querySelectorAll('select[name="station_id"] option[data-rate]').forEach(opt => {
+        this.rates[opt.value] = { rate: parseFloat(opt.dataset.rate), max: parseInt(opt.dataset.max) };
+      });
+      // Remove flash from URL without reload
+      if (window.location.search.includes('flash=')) {
+        history.replaceState(null, '', window.location.pathname);
+      }
+    },
+    updateRate() {
+      if (this.rates[this.stationId]) {
+        this.maxPeople = this.rates[this.stationId].max;
+        this.calcAmount();
+      }
+    },
+    calcAmount() {
+      if (this.rates[this.stationId]) {
+        this.amount = (this.rates[this.stationId].rate * parseInt(this.duration || 1)).toFixed(0);
+      }
+    }
+  }
+}
+</script>
+{{end}}

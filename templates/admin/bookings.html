@@ -1,0 +1,100 @@
+{{define "admin_content"}}
+<div x-data="{ filter: '{{.Filter}}' }">
+
+  <!-- Filter tabs -->
+  <div class="flex items-center gap-2 mb-6 flex-wrap">
+    <template x-for="tab in ['all','pending','confirmed','completed','cancelled']" :key="tab">
+      <button @click="filter = tab"
+        :class="filter === tab
+          ? 'bg-purple-600 text-white border-purple-600'
+          : 'bg-[#12121a] text-gray-400 border-gray-700 hover:border-gray-500 hover:text-white'"
+        class="border rounded-xl px-4 py-1.5 text-xs font-semibold capitalize transition-all"
+        x-text="tab === 'all' ? 'All Bookings' : tab">
+      </button>
+    </template>
+  </div>
+
+  <!-- Table card -->
+  <div class="bg-[#12121a] border border-gray-800 rounded-2xl overflow-hidden">
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="border-b border-gray-800">
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-5 py-3">Ref</th>
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3">Customer</th>
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden sm:table-cell">Station</th>
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden md:table-cell">Date & Time</th>
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Dur.</th>
+            {{if eq .User.Role "admin"}}
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3 hidden lg:table-cell">Amount</th>
+            {{end}}
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3">Status</th>
+            {{if eq .User.Role "admin"}}
+            <th class="text-left text-xs text-gray-500 font-semibold uppercase tracking-wider px-4 py-3">Action</th>
+            {{end}}
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-800/50">
+          {{range .Bookings}}
+          <tr class="hover:bg-white/2 transition-colors"
+            x-show="filter === 'all' || filter === '{{.Status}}'">
+            <td class="px-5 py-3 font-mono text-xs text-purple-400 font-bold whitespace-nowrap">{{.BookingRef}}</td>
+            <td class="px-4 py-3 min-w-[140px]">
+              <div class="text-white text-sm font-medium">{{.CustomerName}}</div>
+              <div class="text-gray-500 text-xs">{{.CustomerPhone}}</div>
+              <div class="text-gray-600 text-xs truncate max-w-[160px]">{{.CustomerEmail}}</div>
+            </td>
+            <td class="px-4 py-3 hidden sm:table-cell">
+              <span class="text-xs px-2 py-1 rounded-lg {{if eq .StationType "pc"}}bg-purple-500/15 text-purple-300{{else if eq .StationType "ps4"}}bg-cyan-500/15 text-cyan-300{{else}}bg-amber-500/15 text-amber-300{{end}}">
+                {{if eq .StationType "pc"}}PC{{else if eq .StationType "ps4"}}PS4{{else}}Car{{end}} #{{.StationID}}
+              </span>
+            </td>
+            <td class="px-4 py-3 hidden md:table-cell">
+              <div class="text-gray-300 text-xs">{{.BookingDate.Format "02 Jan 2006"}}</div>
+              <div class="text-gray-500 text-xs">{{.TimeSlot.Label}}</div>
+            </td>
+            <td class="px-4 py-3 text-gray-400 text-xs hidden lg:table-cell">{{.DurationHours}}h</td>
+            {{if eq $.User.Role "admin"}}
+            <td class="px-4 py-3 text-gray-300 text-xs font-medium hidden lg:table-cell">₹{{printf "%.0f" .TotalAmount}}</td>
+            {{end}}
+            <td class="px-4 py-3">
+              <span class="text-xs px-2 py-1 rounded-lg font-semibold whitespace-nowrap
+                {{if eq .Status "confirmed"}}bg-green-500/15 text-green-400
+                {{else if eq .Status "pending"}}bg-amber-500/15 text-amber-400
+                {{else if eq .Status "cancelled"}}bg-red-500/15 text-red-400
+                {{else}}bg-gray-700 text-gray-400{{end}}">
+                {{.Status}}
+              </span>
+            </td>
+            {{if eq $.User.Role "admin"}}
+            <td class="px-4 py-3" x-data="{ open: false }">
+              <div class="relative">
+                <button @click="open = !open" @click.outside="open = false"
+                  class="text-gray-400 hover:text-white border border-gray-700 hover:border-gray-500 rounded-lg px-2.5 py-1 text-xs transition-all">
+                  ···
+                </button>
+                <div x-show="open" x-cloak
+                  class="absolute right-0 mt-1 w-36 bg-[#1a1a28] border border-gray-700 rounded-xl shadow-xl z-10 overflow-hidden">
+                  {{$id := .ID}}
+                  <form method="POST" action="/admin/bookings/{{$id}}/status"><input type="hidden" name="status" value="confirmed"><button type="submit" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-white/5 hover:text-white transition-colors">→ confirmed</button></form>
+                  <form method="POST" action="/admin/bookings/{{$id}}/status"><input type="hidden" name="status" value="pending"><button type="submit" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-white/5 hover:text-white transition-colors">→ pending</button></form>
+                  <form method="POST" action="/admin/bookings/{{$id}}/status"><input type="hidden" name="status" value="completed"><button type="submit" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-white/5 hover:text-white transition-colors">→ completed</button></form>
+                  <form method="POST" action="/admin/bookings/{{$id}}/status"><input type="hidden" name="status" value="cancelled"><button type="submit" class="w-full text-left px-4 py-2 text-xs text-gray-300 hover:bg-white/5 hover:text-white transition-colors">→ cancelled</button></form>
+                </div>
+              </div>
+            </td>
+            {{end}}
+          </tr>
+          {{end}}
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Empty state -->
+    <div class="py-16 text-center text-gray-600 text-sm"
+      x-show="document.querySelectorAll('tbody tr[x-show]').length === 0">
+      No bookings match this filter.
+    </div>
+  </div>
+</div>
+{{end}}
